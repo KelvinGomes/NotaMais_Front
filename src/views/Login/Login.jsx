@@ -29,7 +29,7 @@ class Login extends React.Component {
     render() {
         return (
             <>
-                <div className="content">
+                <div className="content_login">
                     <Row >
                         <CardGroup>
                             <Card className="card_logo">
