@@ -7,6 +7,7 @@ import Maps from "views/Map.jsx";
 import UserPage from "views/User.jsx";
 import UpgradeToPro from "views/Upgrade.jsx";
 import Login from "views/Login/Login.jsx";
+import Cadastro from "views/Cadastro/Cadastro.jsx";
 
 var routes = [
   {
@@ -72,7 +73,15 @@ var routes = [
     name: "Login",
     icon: "nc-icon nc-spaceship",
     component: Login,
-    layout: "/General"
+    layout: "/general"
+  },
+  {
+    pro: true,
+    path: "/cadastro",
+    name: "Cadastro", 
+    icon: "nc-icon nc-spaceship",
+    component: Cadastro,
+    layout: "/general"
   }
 ];
 export default routes;

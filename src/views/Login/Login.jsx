@@ -51,7 +51,7 @@ class Login extends React.Component {
                                                     <FormGroup>
                                                         <Input
                                                             placeholder="Email..."
-                                                            type="text"
+                                                            type="email"
                                                         />
                                                     </FormGroup>
                                                 </Col>
@@ -61,7 +61,7 @@ class Login extends React.Component {
                                                     <FormGroup>
                                                         <Input
                                                             placeholder="Senha..."
-                                                            type="text"
+                                                            type="password"
                                                         />
                                                     </FormGroup>
                                                 </Col>
