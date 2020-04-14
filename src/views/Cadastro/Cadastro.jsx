@@ -39,7 +39,7 @@ class Cadastro extends React.Component {
                                     </CardHeader>
                                     <CardBody>
                                         <div className="div_info">
-                                            <h6>REGISTRE-SE AQUI!</h6>
+                                            <h6>REGISTRE-SE!</h6>
                                             <h7>Aqui no Nota+ você tem duas opções de atuação</h7><br /><br />
                                             <h7>Instrutor</h7>
                                             <label className = "text_info">

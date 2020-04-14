@@ -42,6 +42,7 @@ body {
 .img_logo_info{
     width: 200px;
     align-self: center;
+    margin-bottom: 30px;
 }
 
 .img_user {
