@@ -39,18 +39,18 @@ class Cadastro extends React.Component {
                                     </CardHeader>
                                     <CardBody>
                                         <div className="div_info">
-                                            <h6>REGISTRE-SE!</h6>
-                                            <h7>Aqui no Nota+ você tem duas opções de atuação</h7><br /><br />
-                                            <h7>Instrutor</h7>
-                                            <label className = "text_info">
+                                            <h6 style ={{color: "black", fontSize: "18px"}}>REGISTRE-SE!</h6>
+                                            <h7 style ={{color: "black", fontSize: "12px"}}>Aqui no Nota+ você tem duas opções de atuação</h7><br /><br />
+                                            <h6>Instrutor</h6>
+                                            <label className="text_info" style ={{color: "black", fontSize: "12px"}}>
                                                 Para quem deseja ofertar mentorias, aulas, correções e desenvolvimento
                                                 de projetos. Como intrutor você poderá oferecer serviços aos alunos.
-                                        </label>
-                                            <h7>Aluno</h7>
-                                            <label className = "text_info">
+                                            </label>
+                                            <h6>Aluno</h6>
+                                            <label className="text_info" style ={{color: "black", fontSize: "12px"}}>
                                                 Para quem precisa de ajuda com alguma aula, tarefa ou projeto.
                                                 Como aluno você poderá realizar pedidos e receber propostas dos instrutores.
-                                        </label>
+                                            </label>
                                         </div>
                                     </CardBody>
                                 </Col>
@@ -58,19 +58,19 @@ class Cadastro extends React.Component {
                             <Card className="card_cadastro">
                                 <CardHeader>
                                     <Row>
-                                        <Col>
-                                            <img src={require("assets/img/nota+/Instrutor.png")} alt="Nota+" /> 
+                                        <Col style = {{marginRight: "50px"}} >
+                                            <img src={require("assets/img/nota+/Instrutor.png")} alt="Nota+" className = "img_type_user" />
                                         </Col>
                                         <Col>
-                                            <img src={require("assets/img/nota+/Aluno.png")} alt="Nota+" />
+                                            <img src={require("assets/img/nota+/Aluno.png")} alt="Nota+" className = "img_type_user"/>
                                         </Col>
                                     </Row>
                                     <Row>
-                                        <Col>
-                                            <h6 className = "user_type_text">INSTRUTOR</h6>
+                                        <Col style = {{marginRight: "50px"}}>
+                                            <h6 className="user_type_text">INSTRUTOR</h6>
                                         </Col>
                                         <Col>
-                                            <h6 className = "user_type_text">ALUNO</h6>
+                                            <h6 className="user_type_text">ALUNO</h6>
                                         </Col>
                                     </Row>
                                 </CardHeader>
@@ -80,11 +80,11 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="12">
                                                 <FormGroup>
                                                     <Input
-                                                        placeholder="Nome..."
+                                                        placeholder="Nome"
                                                         type="text"
                                                     />
                                                 </FormGroup>
-                                            </Col>     
+                                            </Col>
                                         </Row>
                                         <Row>
                                             <Col className="pr-1" md="6">
@@ -98,7 +98,7 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <Input
-                                                        placeholder="Telefone..."
+                                                        placeholder="Telefone"
                                                         type="number"
                                                     />
                                                 </FormGroup>
@@ -108,7 +108,7 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="12">
                                                 <FormGroup>
                                                     <Input
-                                                        placeholder="E-mail..."
+                                                        placeholder="E-mail"
                                                         type="email"
                                                     />
                                                 </FormGroup>
@@ -118,7 +118,7 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <Input
-                                                        placeholder="Senha..."
+                                                        placeholder="Senha"
                                                         type="password"
                                                     />
                                                 </FormGroup>
@@ -126,9 +126,29 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <Input
-                                                        placeholder="Confirmar senha..."
+                                                        placeholder="Confirmar senha"
                                                         type="password"
                                                     />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col className="pr-1" md="6">
+                                                <FormGroup>
+                                                    <select name="dropdown" style={{ height: "40px", width: "100%", borderRadius: "5px" }} >
+                                                        <option value="" disabled selected>Grau de intrução</option>
+                                                        <option value="Java">Java</option>
+                                                        <option value="Discrete Mathematics">Discrete Mathematics</option>
+                                                    </select>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col className="pr-1" md="6">
+                                                <FormGroup>
+                                                    <select name="dropdown" style={{ height: "40px", width: "100%", borderRadius: "5px" }}>
+                                                        <option value="" disabled selected>Área de Interesse</option>
+                                                        <option value="Java">Java</option>
+                                                        <option value="Discrete Mathematics">Discrete Mathematics</option>
+                                                    </select>
                                                 </FormGroup>
                                             </Col>
                                         </Row>

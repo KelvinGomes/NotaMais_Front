@@ -21,7 +21,7 @@ class User extends React.Component {
       <>
         <div className="content">
           <Row>
-            <Col md="4">
+            <Col md="4" style={{ marginBottom: "30px" }}>
               <Card style={{ height: "100%", maxHeight: "615px" }} className="card-user">
                 <div className="image">
                   <img
@@ -57,15 +57,13 @@ class User extends React.Component {
                 <CardHeader>
                   <CardTitle tag="h5">Editar Perfil</CardTitle>
                 </CardHeader>
-                <CardBody>
+                <CardBody style = {{marginRight: "10px"}}>
                   <Form >
                     <Row>
                       <Col className="pr-1" md="12">
                         <FormGroup>
                           <label>Nome</label>
                           <Input
-                            defaultValue="Alessandro Pedrosa"
-                            disabled
                             placeholder="Nome"
                             type="text"
                           />
@@ -75,7 +73,6 @@ class User extends React.Component {
                         <FormGroup>
                           <label>Apelido</label>
                           <Input
-                            defaultValue="michael23"
                             placeholder="Apelido"
                             type="text"
                           />
@@ -85,7 +82,6 @@ class User extends React.Component {
                         <FormGroup>
                           <label>Telefone</label>
                           <Input
-                            defaultValue="Faker"
                             placeholder="telefone"
                             type="text"
                           />
@@ -105,7 +101,6 @@ class User extends React.Component {
                         <FormGroup>
                           <label>Senha</label>
                           <Input
-                            defaultValue="Chet"
                             placeholder="Senha"
                             type="text"
                           />
@@ -115,7 +110,6 @@ class User extends React.Component {
                         <FormGroup>
                           <label>Confirmar Senha</label>
                           <Input
-                            defaultValue="Faker"
                             placeholder="Confirmar Senha"
                             type="text"
                           />
@@ -125,21 +119,21 @@ class User extends React.Component {
                     <Row>
                       <Col className="pr-1" md="6">
                         <FormGroup>
-                        <label>Área de Interesse</label>
-                        <br/>
-                        <select name="dropdown" style={{height: "30px", width:"100%"}}>
-                          <option value="Área de Interesse" selected>Área de Interesse</option>
-                          <option value="Java">Java</option>
-                          <option value="Discrete Mathematics">Discrete Mathematics</option>
-                        </select>
+                          <label>Grau de intrução</label>
+                          <br />
+                          <select name="dropdown" style={{ height: "40px", width: "100%", borderRadius: "5px" }} >
+                            <option value="" disabled selected>Grau de intrução</option>
+                            <option value="Java">Java</option>
+                            <option value="Discrete Mathematics">Discrete Mathematics</option>
+                          </select>
                         </FormGroup>
                       </Col>
                       <Col className="pr-1" md="6">
                         <FormGroup>
-                          <label>Grau de Instrução Atendido</label>
-                          <br/>
-                          <select name="dropdown"style={{height: "30px", width:"100%"}} >
-                            <option value="Grau de Instrução Atendido" selected>Grau de Instrução Atendido</option>
+                          <label>Área de Interesse</label>
+                          <br />
+                          <select name="dropdown" style={{ height: "40px", width: "100%", borderRadius: "5px" }}>
+                            <option value="" disabled selected>Área de Interesse</option>
                             <option value="Java">Java</option>
                             <option value="Discrete Mathematics">Discrete Mathematics</option>
                           </select>
