@@ -40,14 +40,14 @@ class Cadastro extends React.Component {
                                     <CardBody>
                                         <div className="div_info">
                                             <h6 style ={{color: "black", fontSize: "18px"}}>REGISTRE-SE!</h6>
-                                            <h7 style ={{color: "black", fontSize: "12px"}}>Aqui no Nota+ você tem duas opções de atuação</h7><br /><br />
+                                            <h7 style ={{color: "black", fontSize: "14px"}}>Aqui no Nota+ você tem duas opções de atuação</h7><br /><br />
                                             <h6>Instrutor</h6>
-                                            <label className="text_info" style ={{color: "black", fontSize: "12px"}}>
+                                            <label className="text_info" style ={{color: "black", fontSize: "14px"}}>
                                                 Para quem deseja ofertar mentorias, aulas, correções e desenvolvimento
                                                 de projetos. Como intrutor você poderá oferecer serviços aos alunos.
                                             </label>
                                             <h6>Aluno</h6>
-                                            <label className="text_info" style ={{color: "black", fontSize: "12px"}}>
+                                            <label className="text_info" style ={{color: "black", fontSize: "14px"}}>
                                                 Para quem precisa de ajuda com alguma aula, tarefa ou projeto.
                                                 Como aluno você poderá realizar pedidos e receber propostas dos instrutores.
                                             </label>

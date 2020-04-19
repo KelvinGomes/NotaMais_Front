@@ -39,8 +39,8 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/user-page",
-    name: "User Profile",
+    path: "/perfil",
+    name: "Perfil",
     icon: "nc-icon nc-single-02",
     component: UserPage,
     layout: "/admin"
@@ -61,25 +61,13 @@ var routes = [
   },
   {
     pro: true,
-    path: "/upgrade",
-    name: "Upgrade to PRO",
-    icon: "nc-icon nc-spaceship",
-    component: UpgradeToPro,
-    layout: "/admin"
-  },
-  {
-    pro: true,
     path: "/login",
-    name: "Login",
-    icon: "nc-icon nc-spaceship",
     component: Login,
     layout: "/general"
   },
   {
     pro: true,
     path: "/cadastro",
-    name: "Cadastro", 
-    icon: "nc-icon nc-spaceship",
     component: Cadastro,
     layout: "/general"
   }
