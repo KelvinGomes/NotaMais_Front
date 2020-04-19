@@ -57,7 +57,7 @@ class User extends React.Component {
                 <CardHeader>
                   <CardTitle tag="h5">Editar Perfil</CardTitle>
                 </CardHeader>
-                <CardBody style = {{marginRight: "10px"}}>
+                <CardBody style={{ marginRight: "10px" }}>
                   <Form >
                     <Row>
                       <Col className="pr-1" md="12">
@@ -121,22 +121,23 @@ class User extends React.Component {
                         <FormGroup>
                           <label>Grau de intrução</label>
                           <br />
-                          <select name="dropdown" style={{ height: "40px", width: "100%", borderRadius: "5px" }} >
-                            <option value="" disabled selected>Grau de intrução</option>
-                            <option value="Java">Java</option>
-                            <option value="Discrete Mathematics">Discrete Mathematics</option>
-                          </select>
+                          <Input type="select" name="select" id="exampleSelect">
+                            <option>Ensino médio</option>
+                            <option>Técnico</option>
+                            <option>Ensino superior</option>
+                          </Input>
                         </FormGroup>
                       </Col>
                       <Col className="pr-1" md="6">
                         <FormGroup>
                           <label>Área de Interesse</label>
                           <br />
-                          <select name="dropdown" style={{ height: "40px", width: "100%", borderRadius: "5px" }}>
-                            <option value="" disabled selected>Área de Interesse</option>
-                            <option value="Java">Java</option>
-                            <option value="Discrete Mathematics">Discrete Mathematics</option>
-                          </select>
+                          <Input type="select" name="select" id="exampleSelect">
+                            <option>Ciências Exatas</option>
+                            <option>Ciencias Humanas</option>
+                            <option>Ciências Biológicas</option>
+                            <option>Linguagens e Códigos</option>
+                          </Input>
                         </FormGroup>
                       </Col>
                     </Row>
