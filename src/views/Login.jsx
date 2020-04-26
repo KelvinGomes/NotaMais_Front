@@ -68,7 +68,7 @@ class Login extends React.Component {
                                             <Row>
                                                 <div className="update ml-auto mr-auto">
                                                     <Button
-                                                        className="btn_login"
+                                                        className="btn_padrao"
                                                         color="primary"
                                                         type="submit"
                                                     >

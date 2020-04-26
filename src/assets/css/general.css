@@ -51,7 +51,8 @@ body {
     align-items: center;
 }
 
-.btn_login {
+.btn_padrao {
+    margin: 10px;
     background-color:  rgb(58, 132, 177);
     color: white;
 }
@@ -103,11 +104,6 @@ body {
     align-items: center;
 }
 
-.btn_registre {
-    background-color:  rgb(58, 132, 177);
-    color: white;
-}
-
 .user_type_text {
     color: white;
     margin-top: 10px;
@@ -116,4 +112,61 @@ body {
 
 .img_type_user{
     width: 90px;
+}
+
+.btn_adicionar {
+    text-align: center;
+    align-items: center;
+    width: 65%;
+}
+
+.div_novo_pedido {
+    margin: 15px;
+}
+
+.div_resultado_pedidos {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.card_status_requisitado {
+    background-color: rgb(58, 132, 177);
+    height: 100%;
+    align-items: center;
+    text-align: center;
+}
+
+.card_status_em_andamento {
+    background-color: rgb(255, 241, 116);
+    height: 100%;
+    align-items: center;
+    text-align: center;
+}
+.card_status_concluido {
+    background-color: rgb(98, 184, 90);
+    height: 100%;
+    align-items: center;
+    text-align: center;
+}
+
+.card_status_cancelado {
+    background-color: rgb(223, 119, 101);
+    height: 100%;
+    align-items: center;
+    text-align: center;
+}
+
+.div_solicitar_pedido {
+    align-content: center;
+    align-self: center;
+    text-align: center;
+    align-items: center;
+    margin-left: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.icon_add_pedido {
+    width: 40px;
+    margin-right: 20px;
 }

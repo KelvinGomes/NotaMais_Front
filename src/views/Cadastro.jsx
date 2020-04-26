@@ -155,7 +155,7 @@ class Cadastro extends React.Component {
                                         <Row>
                                             <div className="update ml-auto mr-auto">
                                                 <Button
-                                                    className="btn_registre"
+                                                    className="btn_padrao"
                                                     color="primary"
                                                     type="submit"
                                                 >
