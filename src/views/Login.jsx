@@ -33,7 +33,9 @@ class Login extends React.Component {
                                 <CardHeader>
                                 </CardHeader>
                                 <CardBody>
-                                    <img className = "img_logo" src={require("assets/img/nota+/Logo.png")}  alt = "Nota+"/>
+                                    <div className = "img_logo">
+                                        <img  src={require("assets/img/nota+/Logo.png")}  alt = "Nota+"/>
+                                    </div>
                                 </CardBody>
                             </Card>
                             <Card className="card_login">
