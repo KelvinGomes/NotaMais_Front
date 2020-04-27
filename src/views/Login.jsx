@@ -5,8 +5,6 @@ import {
     Card,
     CardHeader,
     CardBody,
-    CardFooter,
-    CardTitle,
     FormGroup,
     Form,
     Input,
@@ -14,13 +12,6 @@ import {
     CardGroup,
     Col
 } from "reactstrap";
-
-// core components
-import {
-    dashboard24HoursPerformanceChart,
-    dashboardEmailStatisticsChart,
-    dashboardNASDAQChart
-} from "variables/charts.jsx";
 
 class Login extends React.Component {
     render() {

@@ -134,6 +134,8 @@ body {
     height: 100%;
     align-items: center;
     text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .card_status_em_andamento {
@@ -141,12 +143,16 @@ body {
     height: 100%;
     align-items: center;
     text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .card_status_concluido {
     background-color: rgb(98, 184, 90);
     height: 100%;
     align-items: center;
     text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .card_status_cancelado {
@@ -154,6 +160,8 @@ body {
     height: 100%;
     align-items: center;
     text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .div_solicitar_pedido {
@@ -169,4 +177,8 @@ body {
 .icon_add_pedido {
     width: 40px;
     margin-right: 20px;
+}
+
+.img_novo_pedido {
+    width: 50%;
 }

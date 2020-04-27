@@ -4,7 +4,6 @@ import { Route, Switch } from "react-router-dom";
 
 import routes from "routes.js";
 import '../assets/css/general.css';
-var ps;
 
 class General extends React.Component {
   constructor(props) {

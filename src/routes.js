@@ -5,7 +5,7 @@ import Typography from "views/Typography.jsx";
 import TableList from "views/Tables.jsx";
 import Pedidos from "views/Pedidos.jsx";
 import UserPage from "views/User.jsx";
-import UpgradeToPro from "views/Upgrade.jsx";
+import Adicionar_Pedido from "views/Adicionar_Pedido.jsx";
 import Login from "views/Login.jsx";
 import Cadastro from "views/Cadastro.jsx";
 
@@ -57,6 +57,12 @@ var routes = [
     name: "Typography",
     icon: "nc-icon nc-caps-small",
     component: Typography,
+    layout: "/admin"
+  },
+  {
+    pro: true,
+    path: "/adicionar_pedido",
+    component: Adicionar_Pedido,
     layout: "/admin"
   },
   {
