@@ -182,3 +182,25 @@ body {
 .img_novo_pedido {
     width: 50%;
 }
+
+/* Tela Descricao Pedido*/
+
+.titulo {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.coluna_descricao {
+    display: grid;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.icone_detalhe {
+    padding-right: 20px;
+    max-width: 90px; 
+    max-height: 90px 
+}
