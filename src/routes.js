@@ -2,7 +2,7 @@ import Dashboard from "views/Dashboard.jsx";
 import Notifications from "views/Notifications.jsx";
 import Icons from "views/Icons.jsx";
 import Typography from "views/Typography.jsx";
-import TableList from "views/Tables.jsx";
+import Detalhes_pedido from "views/Detalhes.jsx";
 import Pedidos from "views/Pedidos.jsx";
 import UserPage from "views/User.jsx";
 import Adicionar_Pedido from "views/Adicionar_Pedido.jsx";
@@ -46,10 +46,9 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/tables",
-    name: "Table List",
-    icon: "nc-icon nc-tile-56",
-    component: TableList,
+    pro: true,
+    path: "/detalhes_pedido",
+    component: Detalhes_pedido,
     layout: "/admin"
   },
   {
