@@ -17,7 +17,7 @@ class Adicionar_Pedido extends React.Component {
               backgroundColor: "rgb(58, 132, 177)", borderTopLeftRadius: "10px",
               borderTopRightRadius: "10px", textAlign: "center"
             }}>
-              <h6 style={{ color: "white" }}>Para gerar seu pedido preencha o questionário</h6>
+              <h6>Para gerar seu pedido preencha o questionário</h6>
             </CardHeader>
             <CardBody>
               <Form>
@@ -33,7 +33,7 @@ class Adicionar_Pedido extends React.Component {
                       </Input>
                     </FormGroup>
                   </Col>
-                  <Col className="pr-1" md="4">
+                  <Col className="pr-1" md="3">
                     <p>Em qual área se enquadra?</p>
                     <FormGroup>
                       <Input type="select" name="select" id="exampleSelect">
@@ -45,7 +45,7 @@ class Adicionar_Pedido extends React.Component {
                       </Input>
                     </FormGroup>
                   </Col>
-                  <Col className="pr-1" md="4">
+                  <Col className="pr-1" md="2">
                     <p>Para quando?</p>
                     <FormGroup>
                       <Input
@@ -53,9 +53,7 @@ class Adicionar_Pedido extends React.Component {
                       />
                     </FormGroup>
                   </Col>
-                </Row>
-                <Row>
-                  <Col className="pr-1" md="12">
+                  <Col className="pr-1" md="3">
                     <p>Qual o assunto da atividade?</p>
                     <FormGroup>
                       <Input
@@ -75,12 +73,8 @@ class Adicionar_Pedido extends React.Component {
                   </Col>
                 </Row>
                 <Row>
-                  <img className="update ml-auto mr-auto" src={require("assets/img/nota+/Novo_pedido.png")} alt="Nota+" />
-                </Row>
-                <Row>
                   <Button style={{ backgroundColor: " rgb(58, 132, 177)" }} className="update ml-auto mr-auto" color="primary">buscar</Button>{' '}
                 </Row>
-
               </Form>
             </CardBody>
             <CardFooter>
