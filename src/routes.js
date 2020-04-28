@@ -4,6 +4,7 @@ import Icons from "views/Icons.jsx";
 import Typography from "views/Typography.jsx";
 import Detalhes_pedido from "views/Detalhes.jsx";
 import Detalhes_Prestador from "views/Detalhes_Prestador.jsx";
+import Publicar_Proposta from "views/Publicar_Proposta.jsx";
 import Pedidos from "views/Pedidos.jsx";
 import UserPage from "views/User.jsx";
 import Adicionar_Pedido from "views/Adicionar_Pedido.jsx";
@@ -56,6 +57,12 @@ var routes = [
     pro: true,
     path: "/detalhes_prestador",
     component: Detalhes_Prestador,
+    layout: "/admin"
+  },
+  {
+    pro: true,
+    path: "/proposta",
+    component: Publicar_Proposta,
     layout: "/admin"
   },
   {

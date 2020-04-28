@@ -9,10 +9,11 @@ import {
   CardGroup,
   Row,
   CardFooter,
-  Col
+  Col,
+  Input
 } from "reactstrap";
 
-class Detalhes_Prestador extends React.Component {
+class Publicar_Proposta extends React.Component {
   render() {
     return (
       <>
@@ -61,24 +62,30 @@ class Detalhes_Prestador extends React.Component {
 
               <CardGroup>
 
-                <Card className="card_descricao">
+                <Card className="card_info_proposta">
                   <CardBody>
                     <Row>
-                      <Col style={{ textAlign: "center" }}>
-                        <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
-                        <p>Necessito de ajuda para realizar a formulação de 10 guidelines para um projeto,
-                            cada guideline deve conter sua descrição,
-                                      um exemplo e uma justificativa. Maiores informações se encontram no arquivo em anexo.</p>
+                      <Col className="pr-1" md="4"><p style={{ fontWeight: "bold" }}>Data</p><p>10/04/2020</p></Col>
+                      <Col className="pr-1" md="4">
+                        <p style={{ fontWeight: "bold" }}>Valor</p>
+                        <Input placeholder="" type="" />
+                      </Col>
+                      <Col >
+                        <p style={{ fontWeight: "bold" }}>Descrição</p>
+                        <Input className= "input_desc_proposta" placeholder="" type="" />
                       </Col>
                     </Row>
                   </CardBody>
                 </Card>
 
-                <Card className="card_informacoes">
+                <Card className="card_enviar_proposta">
                   <CardBody>
                     <Row>
-                      <Col><p style={{ fontWeight: "bold" }}>Data</p><p>05-04-2020</p></Col>
-                      <Col><p style={{ fontWeight: "bold" }}>Valor</p><p>R$ 70,00</p></Col>
+                      <Col className="pr-1" md="12">
+                        <a>
+                          <img className="icone_enviar" src={require("assets/img/nota+/img-aceitar.png")} alt="foto" />
+                        </a>
+                      </Col>
                     </Row>
                   </CardBody>
                 </Card>
@@ -92,4 +99,4 @@ class Detalhes_Prestador extends React.Component {
     );
   }
 }
-export default Detalhes_Prestador;
+export default Publicar_Proposta;
