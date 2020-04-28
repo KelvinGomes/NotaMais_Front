@@ -92,7 +92,7 @@ class Pedidos extends React.Component {
               </Col>
             </Row>
           </div>
-          <div className = "div_solicitar_pedido">
+          <div className="div_solicitar_pedido">
             <Row>
               <i className="nc-icon nc-simple-add" />
               <h6>Novo pedido</h6>
@@ -111,13 +111,16 @@ class Pedidos extends React.Component {
                   <CardFooter style={{ textAlign: "center", margin: "0px" }}>
                     <Row>
                       <Col className="pr-1" md="3">
-                        <p>Requisitante: Kelvin Gomes</p>
+                        <h7 style={{ fontWeight: "bold" }}>Requisitante: </h7>
+                        <h7>Kelvin Gomes</h7>
                       </Col>
                       <Col className="pr-1" md="3">
-                        <p>Área : Ciências Exatas</p>
+                        <h7 style={{ fontWeight: "bold" }}>Área : </h7>
+                        <h7>Ciências Exatas</h7>
                       </Col>
                       <Col className="pr-1" md="3">
-                        <p>Status: Requisitado</p>
+                        <h7 style={{ fontWeight: "bold" }}>Status: </h7>
+                        <h7>Em andamento</h7>
                       </Col>
                     </Row>
                   </CardFooter>
@@ -135,13 +138,16 @@ class Pedidos extends React.Component {
                   <CardFooter style={{ textAlign: "center", margin: "0px" }}>
                     <Row>
                       <Col className="pr-1" md="3">
-                        <p>Requisitante: Kelvin Gomes</p>
+                        <h7 style={{ fontWeight: "bold" }}>Requisitante: </h7>
+                        <h7>Kelvin Gomes</h7>
                       </Col>
                       <Col className="pr-1" md="3">
-                        <p>Área : Ciências Exatas</p>
+                        <h7 style={{ fontWeight: "bold" }}>Área : </h7>
+                        <h7>Ciências Exatas</h7>
                       </Col>
                       <Col className="pr-1" md="3">
-                        <p>Status: Em andamento</p>
+                        <h7 style={{ fontWeight: "bold" }}>Status: </h7>
+                        <h7>Em andamento</h7>
                       </Col>
                       <Col className="pr-1" md="3">
                         <p className="text-danger">3 dias restantes</p>

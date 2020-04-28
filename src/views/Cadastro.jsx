@@ -1,20 +1,75 @@
 import React from "react";
+import axios from 'axios'; 
+import api from '../api';
 
-// reactstrap components
 import {
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    FormGroup,
-    Form,
-    Input,
-    Row,
-    CardGroup,
-    Col
+    Button,Card, CardHeader, CardBody, FormGroup,
+    Form, Input, Row, CardGroup, Col
 } from "reactstrap";
 
 class Cadastro extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: {
+                name: '',
+                nickname: '',
+                phone: '',
+                email: '',
+                password: '',
+                contractor: 'true'
+            },
+            confirm_password: '',
+            invalid_password: ''
+
+        };
+        this.atribuirValor = this.atribuirValor.bind(this);
+        this.confirmarSenha = this.confirmarSenha.bind(this);
+        this.atribuirConfirmacao = this.atribuirConfirmacao.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.submeter = this.submeter.bind(this);
+    }
+
+    handleChange(event){
+        this.atribuirConfirmacao(event);
+        this.confirmarSenha();
+    }
+
+    submeter(event) {
+        event.preventDefault();
+        let user = this.state.user;
+        axios.post(`https://notamais-backend01.herokuapp.com/users`, user)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        window.alert("Usuário cadastrado com sucesso!");
+      })
+    }
+
+    atribuirValor(event) {
+        let user = this.state.user;
+        user[event.target.name] = event.target.value;
+        this.setState({ user: user });
+    }
+
+    atribuirConfirmacao(event) {
+        let state = this.state;
+        state[event.target.name] = event.target.value;
+        this.setState({ state: state });
+    }
+
+    confirmarSenha(){
+        let invalid_password = this.state.invalid_password;
+        console.log(this.state.confirm_password)
+        console.log(this.state.user.password)
+        if(this.state.user.password != this.state.confirm_password){
+            invalid_password = 'confirmação inválida';
+        }else{
+            invalid_password = '';
+        }
+        this.setState({ invalid_password: invalid_password });
+    }
+
     render() {
         return (
             <>
@@ -68,7 +123,7 @@ class Cadastro extends React.Component {
                                         <Row>
                                             <Col className="pr-1" md="12">
                                                 <FormGroup>
-                                                    <Input
+                                                    <Input maxLength="50" name="name" value={this.state.user.name} onChange={this.atribuirValor}
                                                         placeholder="Nome"
                                                         type="text"
                                                     />
@@ -78,7 +133,7 @@ class Cadastro extends React.Component {
                                         <Row>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input
+                                                    <Input maxLength="50" name="nickname" value={this.state.user.nickname} onChange={this.atribuirValor}
                                                         placeholder="Apelido"
                                                         type="text"
                                                     />
@@ -86,7 +141,7 @@ class Cadastro extends React.Component {
                                             </Col>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input
+                                                    <Input maxLength="11" name="phone" value={this.state.user.phone} onChange={this.atribuirValor}
                                                         placeholder="Telefone"
                                                         type="number"
                                                     />
@@ -96,7 +151,7 @@ class Cadastro extends React.Component {
                                         <Row>
                                             <Col className="pr-1" md="12">
                                                 <FormGroup>
-                                                    <Input
+                                                    <Input maxLength="50" name="email" value={this.state.user.email} onChange={this.atribuirValor}
                                                         placeholder="E-mail"
                                                         type="email"
                                                     />
@@ -106,7 +161,7 @@ class Cadastro extends React.Component {
                                         <Row>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input
+                                                    <Input maxLength="10" name="password" value={this.state.user.password} onChange={this.atribuirValor}
                                                         placeholder="Senha"
                                                         type="password"
                                                     />
@@ -114,10 +169,11 @@ class Cadastro extends React.Component {
                                             </Col>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input
+                                                    <Input maxLength="10" name="confirm_password" value={this.state.confirm_password} onChange={this.handleChange}
                                                         placeholder="Confirmar senha"
                                                         type="password"
                                                     />
+                                                    <p className="text-danger">{this.state.invalid_password}</p>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -145,6 +201,7 @@ class Cadastro extends React.Component {
                                         <Row>
                                             <div className="update ml-auto mr-auto">
                                                 <Button
+                                                    onClick={this.submeter}
                                                     className="btn_padrao"
                                                     color="primary"
                                                     type="submit"
