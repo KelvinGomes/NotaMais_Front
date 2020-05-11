@@ -20,9 +20,8 @@ var routes = [
     layout: "/admin"
   },
   {
+    pro: true,
     path: "/icons",
-    name: "Icons",
-    icon: "nc-icon nc-diamond",
     component: Icons,
     layout: "/admin"
   },
@@ -34,9 +33,7 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/notifications",
-    name: "Notifications",
-    icon: "nc-icon nc-bell-55",
+    pro: true,
     component: Notifications,
     layout: "/admin"
   },
@@ -66,9 +63,8 @@ var routes = [
     layout: "/admin"
   },
   {
+    pro: true,
     path: "/typography",
-    name: "Typography",
-    icon: "nc-icon nc-caps-small",
     component: Typography,
     layout: "/admin"
   },
