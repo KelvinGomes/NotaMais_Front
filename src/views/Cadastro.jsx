@@ -17,7 +17,9 @@ class Cadastro extends React.Component {
                 phone: '',
                 email: '',
                 password: '',
-                contractor: 'true'
+                contractor: 'true',
+                area_interest: '',
+                education_level: ''
             },
             confirm_password: '',
             invalid_password: ''
@@ -44,6 +46,10 @@ class Cadastro extends React.Component {
         console.log(res.data);
         window.alert("Usuário cadastrado com sucesso!");
       })
+      .catch((error) => {
+          console.log(error);
+          window.alert("Erro ao cadastrar usuário!");
+      });
     }
 
     atribuirValor(event) {
@@ -60,8 +66,6 @@ class Cadastro extends React.Component {
 
     confirmarSenha(){
         let invalid_password = this.state.invalid_password;
-        console.log(this.state.confirm_password)
-        console.log(this.state.user.password)
         if(this.state.user.password != this.state.confirm_password){
             invalid_password = 'confirmação inválida';
         }else{
@@ -161,7 +165,7 @@ class Cadastro extends React.Component {
                                         <Row>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input maxLength="10" name="password" value={this.state.user.password} onChange={this.atribuirValor}
+                                                    <Input minLength="6" maxLength="10" name="password" value={this.state.user.password} onChange={this.atribuirValor}
                                                         placeholder="Senha"
                                                         type="password"
                                                     />
@@ -169,7 +173,7 @@ class Cadastro extends React.Component {
                                             </Col>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input maxLength="10" name="confirm_password" value={this.state.confirm_password} onChange={this.handleChange}
+                                                    <Input minLength="6" maxLength="10" name="confirm_password" value={this.state.confirm_password} onChange={this.handleChange}
                                                         placeholder="Confirmar senha"
                                                         type="password"
                                                     />
@@ -180,20 +184,22 @@ class Cadastro extends React.Component {
                                         <Row>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input type="select" name="select" id="exampleSelect">
-                                                        <option>Ensino médio</option>
-                                                        <option>Técnico</option>
-                                                        <option>Ensino superior</option>
+                                                    <Input type="select" name="education_level" value={this.state.user.education_level} onChange={this.atribuirValor}>
+                                                        <option value = "">Grau atendido</option>
+                                                        <option value = "1">Ensino médio</option>
+                                                        <option value = "2">Técnico</option>
+                                                        <option value = "3">Ensino superior</option>
                                                     </Input>
                                                 </FormGroup>
                                             </Col>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input type="select" name="select" id="exampleSelect">
-                                                        <option>Ciências Exatas</option>
-                                                        <option>Ciencias Humanas</option>
-                                                        <option>Ciências Biológicas</option>
-                                                        <option>Linguagens e Códigos</option>
+                                                    <Input type="select" name="area_interest" value={this.state.user.area_interest} onChange={this.atribuirValor}>
+                                                        <option value = "">Área de interesse</option>
+                                                        <option value = "1">Ciências Exatas</option>
+                                                        <option value = "2">Ciencias Humanas</option>
+                                                        <option value = "3">Ciências Biológicas</option>
+                                                        <option value = "4">Linguagens e Códigos</option>
                                                     </Input>
                                                 </FormGroup>
                                             </Col>
