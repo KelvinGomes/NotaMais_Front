@@ -1,9 +1,9 @@
 import React from "react";
-import axios from 'axios'; 
+import axios from 'axios';
 import api from '../api';
 
 import {
-    Button,Card, CardHeader, CardBody, FormGroup,
+    Button, Card, CardHeader, CardBody, FormGroup,
     Form, Input, Row, CardGroup, Col
 } from "reactstrap";
 
@@ -32,24 +32,25 @@ class Cadastro extends React.Component {
         this.submeter = this.submeter.bind(this);
     }
 
-    handleChange(event){
+    handleChange(event) {
         this.atribuirConfirmacao(event);
         this.confirmarSenha();
     }
 
-    submeter(event) {
+    async submeter(event) {
         event.preventDefault();
         let user = this.state.user;
-        axios.post(`https://notamais-backend01.herokuapp.com/users`, user)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        window.alert("Usuário cadastrado com sucesso!");
-      })
-      .catch((error) => {
-          console.log(error);
-          window.alert("Erro ao cadastrar usuário!");
-      });
+        await axios.post(`https://notamais-backend01.herokuapp.com/users`, user)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                window.alert("Usuário cadastrado com sucesso!");
+                window.location.href = "/general/login";
+            })
+            .catch((error) => {
+                console.log(error);
+                window.alert("Erro ao cadastrar usuário!");
+            });
     }
 
     atribuirValor(event) {
@@ -64,11 +65,11 @@ class Cadastro extends React.Component {
         this.setState({ state: state });
     }
 
-    confirmarSenha(){
+    confirmarSenha() {
         let invalid_password = this.state.invalid_password;
-        if(this.state.user.password != this.state.confirm_password){
+        if (this.state.user.password != this.state.confirm_password) {
             invalid_password = 'confirmação inválida';
-        }else{
+        } else {
             invalid_password = '';
         }
         this.setState({ invalid_password: invalid_password });
@@ -185,21 +186,21 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <Input type="select" name="education_level" value={this.state.user.education_level} onChange={this.atribuirValor}>
-                                                        <option value = "">Grau atendido</option>
-                                                        <option value = "1">Ensino médio</option>
-                                                        <option value = "2">Técnico</option>
-                                                        <option value = "3">Ensino superior</option>
+                                                        <option value="">Grau atendido</option>
+                                                        <option value="1">Ensino médio</option>
+                                                        <option value="2">Técnico</option>
+                                                        <option value="3">Ensino superior</option>
                                                     </Input>
                                                 </FormGroup>
                                             </Col>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <Input type="select" name="area_interest" value={this.state.user.area_interest} onChange={this.atribuirValor}>
-                                                        <option value = "">Área de interesse</option>
-                                                        <option value = "1">Ciências Exatas</option>
-                                                        <option value = "2">Ciencias Humanas</option>
-                                                        <option value = "3">Ciências Biológicas</option>
-                                                        <option value = "4">Linguagens e Códigos</option>
+                                                        <option value="">Área de interesse</option>
+                                                        <option value="1">Ciências Exatas</option>
+                                                        <option value="2">Ciencias Humanas</option>
+                                                        <option value="3">Ciências Biológicas</option>
+                                                        <option value="4">Linguagens e Códigos</option>
                                                     </Input>
                                                 </FormGroup>
                                             </Col>
