@@ -264,3 +264,7 @@ body {
     margin: 0%;
     align-items: center;
 }
+
+.img_type_user :focus img{
+    background-color: black;
+}

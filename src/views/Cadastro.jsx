@@ -18,11 +18,20 @@ class Cadastro extends React.Component {
                 email: '',
                 password: '',
                 contractor: 'true',
-                area_interest: '',
-                education_level: ''
+                area_interest: null,
+                education_level: null
+            },
+            btnInstrutor: {
+                disable: true,
+                color: '#21335b'
+            },
+            btnAluno: {
+                disable: false,
+                hidden: false,
+                color: ''
             },
             confirm_password: '',
-            invalid_password: ''
+            invalid_password: '',
 
         };
         this.atribuirValor = this.atribuirValor.bind(this);
@@ -30,6 +39,7 @@ class Cadastro extends React.Component {
         this.atribuirConfirmacao = this.atribuirConfirmacao.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.submeter = this.submeter.bind(this);
+        this.tipoUsuario = this.tipoUsuario.bind(this);
     }
 
     handleChange(event) {
@@ -75,6 +85,36 @@ class Cadastro extends React.Component {
         this.setState({ invalid_password: invalid_password });
     }
 
+    tipoUsuario(event) {
+        let btnAluno;
+        let btnInstrutor;
+        if (event.target.name == 'btn_aluno') {
+
+            btnAluno = this.state.btnAluno;
+            btnAluno.disable = true;
+            btnAluno.hidden = true;
+            btnAluno.color = '#21335b';
+            this.setState({ btnAluno: btnAluno })
+
+            btnInstrutor = this.state.btnInstrutor;
+            btnInstrutor.disable = false;
+            btnInstrutor.color = '';
+            this.setState({ btnInstrutor: btnInstrutor })
+        }
+        if (event.target.name == 'btn_instrutor'){
+            btnAluno = this.state.btnAluno;
+            btnAluno.disable = false;
+            btnAluno.hidden = false;
+            btnAluno.color = '';
+            this.setState({ btnAluno: btnAluno })
+
+            btnInstrutor = this.state.btnInstrutor;
+            btnInstrutor.disable = true;
+            btnInstrutor.color = '#21335b';
+            this.setState({ btnInstrutor: btnInstrutor})
+        }
+    }
+
     render() {
         return (
             <>
@@ -108,10 +148,14 @@ class Cadastro extends React.Component {
                                 <CardHeader>
                                     <Row>
                                         <Col>
-                                            <img src={require("assets/img/nota+/Instrutor.png")} alt="Nota+" className="img_type_user" />
+                                            <img name="btn_instrutor" src={require("assets/img/nota+/Instrutor.png")} alt="Nota+"
+                                                className="img_type_user" disabled={this.state.btnInstrutor.disable} onClick={this.tipoUsuario} 
+                                                style = {{backgroundColor: this.state.btnInstrutor.color}}/>
                                         </Col>
                                         <Col>
-                                            <img src={require("assets/img/nota+/Aluno.png")} alt="Nota+" className="img_type_user" />
+                                            <img name="btn_aluno" src={require("assets/img/nota+/Aluno.png")} alt="Nota+"
+                                                className="img_type_user" disabled={this.state.btnAluno.disable} onClick={this.tipoUsuario}
+                                                style = {{backgroundColor: this.state.btnAluno.color}} />
                                         </Col>
                                     </Row>
                                     <Row>
@@ -185,7 +229,7 @@ class Cadastro extends React.Component {
                                         <Row>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input type="select" name="education_level" value={this.state.user.education_level} onChange={this.atribuirValor}>
+                                                    <Input hidden={this.state.btnAluno.hidden} type="select" name="education_level" value={this.state.user.education_level} onChange={this.atribuirValor}>
                                                         <option value="">Grau atendido</option>
                                                         <option value="1">Ensino médio</option>
                                                         <option value="2">Técnico</option>
@@ -195,7 +239,7 @@ class Cadastro extends React.Component {
                                             </Col>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
-                                                    <Input type="select" name="area_interest" value={this.state.user.area_interest} onChange={this.atribuirValor}>
+                                                    <Input hidden={this.state.btnAluno.hidden} type="select" name="area_interest" value={this.state.user.area_interest} onChange={this.atribuirValor}>
                                                         <option value="">Área de interesse</option>
                                                         <option value="1">Ciências Exatas</option>
                                                         <option value="2">Ciencias Humanas</option>
