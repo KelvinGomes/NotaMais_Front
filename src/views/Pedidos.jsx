@@ -95,7 +95,7 @@ class Pedidos extends React.Component {
           <div className="div_solicitar_pedido">
             <Row>
               <i className="nc-icon nc-simple-add" />
-              <h6>Novo pedido</h6>
+              <a href = "/admin/adicionar_pedido">Novo pedido</a>
             </Row>
           </div>
           <p>Resultados:</p>

@@ -52,13 +52,10 @@ class Cadastro extends React.Component {
         let user = this.state.user;
         await axios.post(`https://notamais-backend01.herokuapp.com/users`, user)
             .then(res => {
-                console.log(res);
-                console.log(res.data);
                 window.alert("Usuário cadastrado com sucesso!");
                 window.location.href = "/general/login";
             })
             .catch((error) => {
-                console.log(error);
                 window.alert("Erro ao cadastrar usuário!");
             });
     }
