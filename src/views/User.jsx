@@ -47,7 +47,7 @@ class User extends React.Component {
                 </CardBody>
                 <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", height: "80px", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px" }}>
                   <div style={{ textAlign: "center", marginTop: "30px" }}>
-                    <CardLink href="">Definir Perfil Estudantil</CardLink>
+                    <CardLink href="/admin/quiz_descricao">Definir Perfil Estudantil</CardLink>
                   </div>
                 </CardFooter>
               </Card>

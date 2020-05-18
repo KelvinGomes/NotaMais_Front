@@ -57,6 +57,7 @@ body {
     color: white;
 }
 
+
 .card_cadastro {
     box-shadow: 0 5px 0 0 rgba(0, 0, 0, 0.1);
     align-items: center;
@@ -265,3 +266,37 @@ body {
     align-items: center;
 }
 
+/* Definição Quiz */
+
+.btn_iniciar_quiz {
+    background-color:  rgb(58, 132, 177);
+    width: 100%;
+
+    
+}
+.btn_coluna {
+    width: 100%;
+    max-width: 200px;
+    height: 100%;
+    max-height: 350px;
+    margin: auto;
+    padding-top: 5%;
+    padding-left: auto;
+    padding-right: auto;
+}
+
+.definicao_perfil_desc {
+ 
+    text-align: center;
+    width: 100%;
+    max-width: 1000px;
+    height: 100%;
+    max-height: 350px;
+    margin-top: 20px;
+    padding-left: 15%;
+    padding-right: 15%;
+
+}
+.card_user {
+    height: 500px;
+}

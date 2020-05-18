@@ -10,6 +10,9 @@ import UserPage from "views/User.jsx";
 import Adicionar_Pedido from "views/Adicionar_Pedido.jsx";
 import Login from "views/Login.jsx";
 import Cadastro from "views/Cadastro.jsx";
+import Quiz_Descricao from "views/Quiz_Descricao";
+import Not_Found from "views/Not_Found";
+
 
 var routes = [
   {
@@ -42,6 +45,20 @@ var routes = [
     name: "Perfil",
     icon: "nc-icon nc-single-02",
     component: UserPage,
+    layout: "/admin"
+  },
+  {
+    pro: true,
+    path: "/quiz_descricao",
+    name: "Definicao de Perfil",
+    component: Quiz_Descricao,
+    layout: "/admin"
+  },
+  {
+    pro: true,
+    path: "/not_found",
+    name: "Not Found",
+    component: Not_Found,
     layout: "/admin"
   },
   {
