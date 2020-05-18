@@ -50,14 +50,12 @@ var routes = [
   {
     pro: true,
     path: "/quiz_descricao",
-    name: "Definicao de Perfil",
     component: Quiz_Descricao,
     layout: "/admin"
   },
   {
     pro: true,
     path: "/not_found",
-    name: "Not Found",
     component: Not_Found,
     layout: "/admin"
   },

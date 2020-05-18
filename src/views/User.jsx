@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from 'axios';
 import {
   Button,
   Card,
@@ -16,6 +16,34 @@ import {
 } from "reactstrap";
 
 class User extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {
+      }
+    };
+  }
+
+  async componentDidMount() {
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    await axios.get(`https://notamais-backend01.herokuapp.com/users`)
+      .then(res => {
+        let user = res.data.user;
+        this.setState({ user: user});
+        console.log(res.data.user);
+      })
+    
+   /* let url = `https://nota-mais.herokuapp.com/api/usuario/${id}`;
+    await fetch(url)
+      .then((r) => r.json())
+      .then((json) => {
+        this.setState({ usuario: json });
+        console.log(json);
+      })*/
+  }
+
   render() {
     return (
       <>
@@ -37,7 +65,7 @@ class User extends React.Component {
                         className="avatar border-gray"
                         src={require("assets/img/mike.jpg")}
                       />
-                      <h5 className="title">Chet Faker</h5>
+                      <h5 className="title">{this.state.user.name}</h5>
                     </a>
                     <p className="description">@chetfaker</p>
                   </div>

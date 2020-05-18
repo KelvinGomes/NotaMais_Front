@@ -50,6 +50,7 @@ class Login extends React.Component {
                 window.alert("Erro ao logar!");
             });
 
+            console.log(this.state.resposta);
             let token = this.state.resposta.token;
             console.log(token);
             await localStorage.setItem('token', token);  

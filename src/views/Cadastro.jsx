@@ -85,6 +85,7 @@ class Cadastro extends React.Component {
     tipoUsuario(event) {
         let btnAluno;
         let btnInstrutor;
+        let user;
         if (event.target.name == 'btn_aluno') {
 
             btnAluno = this.state.btnAluno;
@@ -97,6 +98,10 @@ class Cadastro extends React.Component {
             btnInstrutor.disable = false;
             btnInstrutor.color = '';
             this.setState({ btnInstrutor: btnInstrutor })
+ 
+            user = this.state.user;
+            user.contractor = false;
+            this.setState({user : user});
         }
         if (event.target.name == 'btn_instrutor'){
             btnAluno = this.state.btnAluno;
