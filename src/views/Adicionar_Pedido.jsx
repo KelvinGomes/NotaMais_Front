@@ -33,10 +33,13 @@ class Adicionar_Pedido extends React.Component {
   async submeter(event) {
     event.preventDefault();
     let order = this.state.order;
+    let token = await localStorage.getItem('token'); 
+    console.log(token);
+    axios.defaults.headers.common = {'Authorization': `bearer ${token}`}
     await axios.post(`https://notamais-backend01.herokuapp.com/orders`, order)
       .then(res => {
         window.alert("Pedido gerado com sucesso!");
-        window.location.href = "admin/pedidos";
+        window.location.href = "/admin/pedidos";
       })
       .catch((error) => {
         window.alert("Erro ao gerar pedido!");
