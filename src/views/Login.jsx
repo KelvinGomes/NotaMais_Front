@@ -112,7 +112,7 @@ class Login extends React.Component {
                                             </Row>
                                             <Row>
                                                 <div className="update ml-auto mr-auto">
-                                                    <label>Registre-se</label>
+                                                    <label><a href="/general/cadastro">Registre-se</a></label>
                                                 </div>
                                             </Row>
                                         </Form>

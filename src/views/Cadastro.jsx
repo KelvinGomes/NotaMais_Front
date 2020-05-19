@@ -263,6 +263,11 @@ class Cadastro extends React.Component {
                                                 </Button>
                                             </div>
                                         </Row>
+                                        <Row>
+                                            <div className="update ml-auto mr-auto">
+                                                <label><a href="/login">Fazer Login</a></label>
+                                            </div>
+                                        </Row>
                                     </Form>
                                 </CardBody>
                             </Card>
