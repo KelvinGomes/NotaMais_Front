@@ -128,7 +128,7 @@ class Header extends React.Component {
           >
             <Nav navbar>
               <NavItem>
-                <Link to="#pablo" className="nav-link btn-rotate">
+                <Link to="/general/login" className="nav-link btn-rotate">
                   <i className="nc-icon nc-button-power" />
                   <p>
                     <span className="d-lg-none d-md-block">Account</span>

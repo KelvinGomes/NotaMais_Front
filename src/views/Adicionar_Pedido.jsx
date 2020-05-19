@@ -1,12 +1,17 @@
 import React from "react";
 import axios from 'axios';
 
+
+import Upload from "../components/Upload";
+import FileList from "../components/FileList";
+import { uniqueId } from 'lodash';
+import filesize from 'filesize';
+
 // reactstrap components
 import {
   Card, CardHeader, CardBody, Row, Col, Form, FormGroup, Input, Button, CardFooter
 }
   from "reactstrap";
-
 
 class Adicionar_Pedido extends React.Component {
   constructor(props) {
@@ -18,8 +23,10 @@ class Adicionar_Pedido extends React.Component {
         educationLevel: '',
         studyArea: '',
         dueDate: '',
-      }
+      },
+      uploadedFiles: [],
     };
+
     this.atribuirValor = this.atribuirValor.bind(this);
     this.submeter = this.submeter.bind(this);
   }
@@ -33,9 +40,8 @@ class Adicionar_Pedido extends React.Component {
   async submeter(event) {
     event.preventDefault();
     let order = this.state.order;
-    let token = await localStorage.getItem('token'); 
-    console.log(token);
-    axios.defaults.headers.common = {'Authorization': `bearer ${token}`}
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
     await axios.post(`https://notamais-backend01.herokuapp.com/orders`, order)
       .then(res => {
         window.alert("Pedido gerado com sucesso!");
@@ -46,7 +52,55 @@ class Adicionar_Pedido extends React.Component {
       });
   }
 
+handleUpload = files => {
+  const uploadedFiles = files.map(file => ({
+    file,
+    id: uniqueId(),
+    name: file.name,
+    readableSize: filesize(file.size),
+    preview: URL.createObjectURL(file),
+    progress: 0,
+    uploaded: false,
+    error: false,
+    url: null,
+  }))
+
+  this.setState({
+    uploadedFiles: this.state.uploadedFiles.concat(uploadedFiles)
+  });
+
+  uploadedFiles.forEach(this.processUpload);
+};
+
+processUpload = (uploadedFile) => {
+  const data = new FormData();
+
+  data.append('file', uploadedFile.file, uploadedFile.name);
+  let token = localStorage.getItem('token');
+  axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+  axios.post(`https://notamais-backend01.herokuapp.com/files`, data, {
+      onUploadProgress: e => {
+      const progress = parseInt(Math.round(e.loaded * 100/e.total))
+
+      this.updateFile(uploadedFile.id, {
+        progress,
+      })
+    }
+  }).then()
+};
+
+updateFile = (id, data) => {
+  this.setState({uploadedFiles: this.state.uploadedFiles.map(uploadedFile => {
+    return id == uploadedFile.id 
+    ? { ...uploadedFile, ...data }
+    : uploadedFile;
+  })})
+};
+
   render() {
+
+    const { uploadedFiles } = this.state;
+
     return (
       <>
         <div className="content">
@@ -63,7 +117,7 @@ class Adicionar_Pedido extends React.Component {
                   <Col className="pr-1" md="4">
                     <p>Qual o grau de instrução necessário?</p>
                     <FormGroup>
-                      <Input name="educationLevel" type="select"  id="exampleSelect" value={this.state.order.educationLevel} onChange={this.atribuirValor}>
+                      <Input name="educationLevel" type="select" id="exampleSelect" value={this.state.order.educationLevel} onChange={this.atribuirValor}>
                         <option value="0">Todos</option>
                         <option value="1">Ensino médio</option>
                         <option value="2">Técnico</option>
@@ -115,6 +169,13 @@ class Adicionar_Pedido extends React.Component {
                       />
                     </FormGroup>
                   </Col>
+                </Row>
+                <Row style={{marginTop: '20px', marginBottom:'20px'}}>
+                  <div className="files_add">
+                    <p>Anexe os documentos referentes a atividade</p>
+                    <Upload onUpload = {this.handleUpload}/>
+                    { !!uploadedFiles.length && <FileList files={ uploadedFiles }/>}
+                  </div>
                 </Row>
                 <Row>
                   <Button style={{ backgroundColor: " rgb(58, 132, 177)" }}

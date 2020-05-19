@@ -300,3 +300,27 @@ body {
 .card_user {
     height: 500px;
 }
+
+.icon_add {
+    width: 30px;
+    margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.icon_add  > input
+{
+    display: none;
+}
+
+.files_add {
+    width: 100%;
+    max-width: 500px;
+    min-width: 200px;
+    align-items: center;
+    align-content: center;
+    margin-top: 20px;
+    margin: 0 auto;
+    text-align: center;
+}
