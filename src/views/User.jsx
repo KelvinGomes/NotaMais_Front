@@ -150,6 +150,7 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Nome</label>
                             <Input
+                              name="name"
                               value={this.state.user.name} 
                               onChange={this.atribuirValor}
                               placeholder={this.state.user.name}
@@ -162,6 +163,7 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Apelido</label>
                             <Input
+                              name="nickname"
                               value={this.state.user.nickname} 
                               onChange={this.atribuirValor}
                               placeholder={this.state.user.nickname}
@@ -173,6 +175,7 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Telefone</label>
                             <Input
+                              name="phone"
                               value={this.state.user.phone} 
                               onChange={this.atribuirValor}
                               placeholder={this.state.user.phone}
