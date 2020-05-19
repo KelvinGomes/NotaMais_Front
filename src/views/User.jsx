@@ -22,10 +22,63 @@ class User extends React.Component {
     this.state = {
       user: {
         contractor: true,
-      }
+        name: '',
+        nickname: '',
+        phone: '',
+        password: '',
+        area_interest: '',
+        education_level: ''
+      },
+      confirm_password: '',
+      invalid_password: ''
     };
-
+    this.submeter = this.submeter.bind(this);
+    this.atribuirValor = this.atribuirValor.bind(this);
+    this.confirmarSenha = this.confirmarSenha.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.atribuirConfirmacao = this.atribuirConfirmacao.bind(this);
   }
+
+  atribuirValor(event) {
+    let user = this.state.user;
+    user[event.target.name] = event.target.value;
+    this.setState({ user: user });
+  }
+
+
+  async submeter(event) {
+    event.preventDefault();
+    let user = this.state.user;
+    await axios.put(`https://notamais-backend01.herokuapp.com/users`, user)
+        .then(res => {
+            window.alert("Atualização efetuada com sucesso!");
+            //window.location.href = "/general/login";
+        })
+        .catch((error) => {
+            window.alert("Erro ao atualizar perfil!");
+        });
+  }
+  confirmarSenha() {
+    let invalid_password = this.state.invalid_password;
+    if (this.state.user.password != this.state.confirm_password) {
+        invalid_password = 'confirmação inválida';
+    } else {
+        invalid_password = '';
+    }
+    this.setState({ invalid_password: invalid_password });
+  }
+
+  atribuirConfirmacao(event) {
+    let state = this.state;
+    state[event.target.name] = event.target.value;
+    this.setState({ state: state });
+  }
+
+  handleChange(event) {
+    this.atribuirConfirmacao(event);
+    this.confirmarSenha();
+  }
+
 
   async componentDidMount() {
     let token = await localStorage.getItem('token');
@@ -97,6 +150,8 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Nome</label>
                             <Input
+                              value={this.state.user.name} 
+                              onChange={this.atribuirValor}
                               placeholder={this.state.user.name}
                               type="text"
                               require 
@@ -107,6 +162,8 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Apelido</label>
                             <Input
+                              value={this.state.user.nickname} 
+                              onChange={this.atribuirValor}
                               placeholder={this.state.user.nickname}
                               type="text"
                             />
@@ -116,6 +173,8 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Telefone</label>
                             <Input
+                              value={this.state.user.phone} 
+                              onChange={this.atribuirValor}
                               placeholder={this.state.user.phone}
                               type="text"
                             />
@@ -126,7 +185,7 @@ class User extends React.Component {
                             <label htmlFor="exampleInputEmail1">
                               Email address
                             </label>
-                            <Input placeholder={this.state.user.email} type="email" />
+                            <Input placeholder={this.state.user.email} type="email" disabled="true" />
                           </FormGroup>
                         </Col>
                       </Row>
@@ -135,8 +194,14 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Senha</label>
                             <Input
+                              minLength="6" maxLength="10"
+                              name="password" 
+                              value={this.state.password} 
+                              onChange={this.handleChange}
+                              value={this.state.user.password} 
+                              onChange={this.atribuirValor}
                               placeholder="Senha"
-                              type="text"
+                              type="password"
                             />
                           </FormGroup>
                         </Col>
@@ -144,8 +209,12 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Confirmar Senha</label>
                             <Input
+                              minLength="6" maxLength="10"
+                              name="confirm_password" 
+                              value={this.state.confirm_password} 
+                              onChange={this.handleChange}
                               placeholder="Confirmar Senha"
-                              type="text"
+                              type="password"
                             />
                           </FormGroup>
                         </Col>
@@ -155,7 +224,12 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Grau de intrução</label>
                             <br />
-                            <Input type="select" name="select" placehold={this.state.user.education_level} id="exampleSelect" >
+                            <Input type="select" name="select" 
+                              placehold={this.state.user.education_level} 
+                              id="exampleSelect"
+                              name="education_level" 
+                              value={this.state.user.education_level} 
+                              onChange={this.atribuirValor}>
                               <option value="1">Ensino médio</option>
                               <option value="2">Técnico</option>
                               <option value="3">Ensino superior</option>
@@ -166,7 +240,12 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Área de Interesse</label>
                             <br />
-                            <Input type="select" name="select" placehold={this.state.user.area_interest} id="exampleSelect">
+                            <Input type="select" name="select" 
+                                placehold={this.state.user.area_interest}
+                                name="area_interest" 
+                                value={this.state.user.area_interest} 
+                                onChange={this.atribuirValor} 
+                                id="exampleSelect">
                                 <option value="1">Ciências Exatas</option>
                                 <option value="2">Ciencias Humanas</option>
                                 <option value="3">Ciências Biológicas</option>
@@ -180,6 +259,7 @@ class User extends React.Component {
                         <div className="update ml-auto mr-auto">
                           <Button
                             className="btn_registre"
+                            onClick={this.submeter}
                             color="primary"
                             type="submit"
                           >
@@ -246,7 +326,11 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Nome</label>
                             <Input
+                              name="name"
+                              value={this.state.user.name} 
+                              onChange={this.atribuirValor}
                               placeholder={this.state.user.name}
+                              onChange={this.atribuirValor}
                               type="text"
                               require 
                             />
@@ -256,6 +340,9 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Apelido</label>
                             <Input
+                              name="nickname"
+                              value={this.state.user.nickname} 
+                              onChange={this.atribuirValor}
                               placeholder={this.state.user.nickname}
                               type="text"
                             />
@@ -265,6 +352,9 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Telefone</label>
                             <Input
+                              name="phone"
+                              value={this.state.user.phone} 
+                              onChange={this.atribuirValor}
                               placeholder={this.state.user.phone}
                               type="text"
                             />
@@ -275,7 +365,7 @@ class User extends React.Component {
                             <label htmlFor="exampleInputEmail1">
                               Email address
                             </label>
-                            <Input placeholder={this.state.user.email} type="email" />
+                            <Input placeholder={this.state.user.email} type="email" disabled="true" />
                           </FormGroup>
                         </Col>
                       </Row>
@@ -284,8 +374,11 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Senha</label>
                             <Input
+                              minLength="6" maxLength="10" name="password" 
+                              value={this.state.user.password} 
+                              onChange={this.atribuirValor}
                               placeholder="Senha"
-                              type="text"
+                              type="password"
                             />
                           </FormGroup>
                         </Col>
@@ -293,8 +386,12 @@ class User extends React.Component {
                           <FormGroup>
                             <label>Confirmar Senha</label>
                             <Input
+                              minLength="6" maxLength="10"
+                              name="confirm_password" 
+                              value={this.state.confirm_password} 
+                              onChange={this.handleChange}
                               placeholder="Confirmar Senha"
-                              type="text"
+                              type="password"
                             />
                           </FormGroup>
                         </Col>
@@ -304,6 +401,7 @@ class User extends React.Component {
                         <div className="update ml-auto mr-auto">
                           <Button
                             className="btn_registre"
+                            onClick={this.submeter}
                             color="primary"
                             type="submit"
                           >
