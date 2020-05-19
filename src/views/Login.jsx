@@ -43,6 +43,7 @@ class Login extends React.Component {
             .then(response => {
                 let res = response.data;
                 this.setState({ resposta: res })
+                
                 window.location.href = "/admin/dashboard";
             })
             .catch((error) => {
