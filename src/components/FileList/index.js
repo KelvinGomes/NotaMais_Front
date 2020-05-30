@@ -33,7 +33,7 @@ const FileList = ({ files }) => (
                     )}
                     {uploadedFiles.url && (
                         <a
-                            href="#"
+                            href= {uploadedFiles.url}
                             target="_blank"
                             rel="noopener noreferrer"
                         >

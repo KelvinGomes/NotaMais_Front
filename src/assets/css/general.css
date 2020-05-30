@@ -315,9 +315,8 @@ body {
 }
 
 .files_add {
-    width: 100%;
+    width: 70%;
     max-width: 500px;
-    min-width: 200px;
     align-items: center;
     align-content: center;
     margin-top: 20px;
