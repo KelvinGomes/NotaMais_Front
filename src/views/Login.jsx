@@ -43,6 +43,10 @@ class Login extends React.Component {
             .then(response => {
                 let res = response.data;
                 this.setState({ resposta: res })
+                let token = this.state.resposta.token;
+                let contractor = this.state.resposta.user.contractor;
+                localStorage.setItem('token', token);  
+                localStorage.setItem('contractor', contractor);
                 window.location.href = "/admin/dashboard";
             })
             .catch((error) => {
@@ -50,11 +54,7 @@ class Login extends React.Component {
                 window.alert("Erro ao logar!");
             });
 
-            console.log(this.state.resposta);
-            let token = this.state.resposta.token;
-            let contractor = this.state.resposta.user.contractor;
-            await localStorage.setItem('token', token);  
-            await localStorage.setItem('contractor', contractor); 
+             
     }
 
     render() {
