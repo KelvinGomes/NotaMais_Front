@@ -43,7 +43,6 @@ class Login extends React.Component {
             .then(response => {
                 let res = response.data;
                 this.setState({ resposta: res })
-                
                 window.location.href = "/admin/dashboard";
             })
             .catch((error) => {
@@ -53,8 +52,9 @@ class Login extends React.Component {
 
             console.log(this.state.resposta);
             let token = this.state.resposta.token;
-            console.log(token);
+            let contractor = this.state.resposta.user.contractor;
             await localStorage.setItem('token', token);  
+            await localStorage.setItem('contractor', contractor); 
     }
 
     render() {

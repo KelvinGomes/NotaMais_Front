@@ -67,7 +67,7 @@ var routes = [
   },
   {
     pro: true,
-    path: "/detalhes_prestador",
+    path: "/detalhes_prestador/:id",
     component: Detalhes_Prestador,
     layout: "/admin"
   },

@@ -17,7 +17,7 @@ class Cadastro extends React.Component {
                 phone: '',
                 email: '',
                 password: '',
-                contractor: 'true',
+                contractor: 'false',
                 area_interest: null,
                 education_level: null
             },
@@ -40,6 +40,7 @@ class Cadastro extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.submeter = this.submeter.bind(this);
         this.tipoUsuario = this.tipoUsuario.bind(this);
+        this.limparUsuario = this.limparUsuario.bind(this);
     }
 
     handleChange(event) {
@@ -86,6 +87,8 @@ class Cadastro extends React.Component {
         let btnAluno;
         let btnInstrutor;
         let user;
+        this.limparUsuario();
+        
         if (event.target.name == 'btn_aluno') {
 
             btnAluno = this.state.btnAluno;
@@ -100,7 +103,7 @@ class Cadastro extends React.Component {
             this.setState({ btnInstrutor: btnInstrutor })
  
             user = this.state.user;
-            user.contractor = false;
+            user.contractor = true;
             this.setState({user : user});
         }
         if (event.target.name == 'btn_instrutor'){
@@ -114,7 +117,24 @@ class Cadastro extends React.Component {
             btnInstrutor.disable = true;
             btnInstrutor.color = '#21335b';
             this.setState({ btnInstrutor: btnInstrutor})
+
+            user = this.state.user;
+            user.contractor = false;
+            this.setState({user : user});
         }
+    }
+
+    limparUsuario(){
+        let user = this.state.user;
+        user.name = '';
+        user.nickname = '';
+        user.phone = '';
+        user.email = '';
+        user.password = '';
+        user.area_interest = null;
+        user.education_level = null;
+    
+        this.setState({user: user});
     }
 
     render() {

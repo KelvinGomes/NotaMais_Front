@@ -19,7 +19,10 @@ class Pedidos extends React.Component {
         number: '',
         status: ''
       },
-      orders: []
+      orders: [],
+      user: {
+        contractor: localStorage.getItem('contractor')
+      }
     };
     this.atribuirValor = this.atribuirValor.bind(this);
     this.limparFiltro = this.limparFiltro.bind(this);
@@ -27,6 +30,22 @@ class Pedidos extends React.Component {
     this.definirArea = this.definirArea.bind(this);
     this.definirStatus = this.definirStatus.bind(this);
     this.definirGrau = this.definirGrau.bind(this);
+  }
+
+  async componentDidMount() {
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    await axios.get(`https://notamais-backend01.herokuapp.com/users`)
+      .then(res => {
+        let user = res.data.user;
+        user.contractor = localStorage.getItem('contractor');
+        this.setState({ user: user });
+
+        let filter = this.state.filter;
+        filter.studyArea = user.area_interest;
+        this.setState({ filter: filter });
+        console.log(res);
+      })
   }
 
   atribuirValor(event) {
@@ -73,11 +92,11 @@ class Pedidos extends React.Component {
       dados.push("status=" + filter.status);
     }
 
-    for (let i = 0; i < dados.length; i++){
-      
-      if(i == 0){
-        url += dados[i]; 
-      }else{
+    for (let i = 0; i < dados.length; i++) {
+
+      if (i == 0) {
+        url += dados[i];
+      } else {
         url += "&" + dados[i];
       }
     }
@@ -163,17 +182,26 @@ class Pedidos extends React.Component {
                       <Col className="pr-1" md="1">
                         <label>Aréa:</label>
                       </Col>
-                      <Col className="pr-1" md="3">
-                        <FormGroup>
-                          <Input type="select" name="studyArea" id="studyArea" value={this.state.filter.studyArea} onChange={this.atribuirValor}>
-                            <option value="0">Todos</option>
-                            <option value="1">Ciências Exatas</option>
-                            <option value="2">Ciências Humanas</option>
-                            <option value="3">Ciencias Biológicas</option>
-                            <option value="4">Linguagens e Códigos</option>
-                          </Input>
-                        </FormGroup>
-                      </Col>
+                      {this.state.user.contractor === 'true' && (
+                        <Col className="pr-1" md="3">
+                          <FormGroup>
+                            <Input type="select" name="studyArea" id="studyArea" value={this.state.filter.studyArea} onChange={this.atribuirValor}>
+                              <option value="0">Todos</option>
+                              <option value="1">Ciências Exatas</option>
+                              <option value="2">Ciências Humanas</option>
+                              <option value="3">Ciencias Biológicas</option>
+                              <option value="4">Linguagens e Códigos</option>
+                            </Input>
+                          </FormGroup>
+                        </Col>
+                      )}
+                      {this.state.user.contractor === 'false' && (
+                        <Col className="pr-1" md="3">
+                          <p>
+                            {this.definirArea(this.state.user.area_interest)}
+                          </p>
+                        </Col>
+                      )}
                       <Col className="pr-1" md="1">
                         <label>Grau de instrução:</label>
                       </Col>
@@ -223,14 +251,16 @@ class Pedidos extends React.Component {
               </Col>
             </Row>
           </div>
-          <div className="div_solicitar_pedido">
-            <Row>
-              <i className="nc-icon nc-simple-add" />
-              <a href="/admin/adicionar_pedido/">
-                <h6>Novo pedido</h6>
-              </a>
-            </Row>
-          </div>
+          {this.state.user.contractor === 'true' && (
+            <div className="div_solicitar_pedido">
+              <Row>
+                <i className="nc-icon nc-simple-add" />
+                <a href="/admin/adicionar_pedido/">
+                  <h6>Novo pedido</h6>
+                </a>
+              </Row>
+            </div>
+          )}
           <p>Resultados:</p>
           <div className="div_resultado_pedidos">
             {this.state.orders.map((order) => {
@@ -238,13 +268,25 @@ class Pedidos extends React.Component {
                 <Row key={order.id}>
                   <Col md="12">
                     <Card>
-                      <Link style={{color: "white"}} to={`/admin/detalhes_pedido/${order.id}`}>
-                        <CardBody className={this.definirStatus(order.status)}>
-                          <Row>
-                            <Col className="pr-1" md="12"><h6>Número: {order.id} / Assunto: {order.subject}</h6></Col>
-                          </Row>
-                        </CardBody>
-                      </Link>
+                      {this.state.user.contractor === 'true' && (
+                        <Link style={{ color: "white" }} to={`/admin/detalhes_pedido/${order.id}`}>
+                          <CardBody className={this.definirStatus(order.status)}>
+                            <Row>
+                              <Col className="pr-1" md="12"><h6>Número: {order.id} / Assunto: {order.subject}</h6></Col>
+                            </Row>
+                          </CardBody>
+                        </Link>
+                      )}
+                      {this.state.user.contractor === 'false' && (
+                        <Link style={{ color: "white" }} to={`/admin/detalhes_prestador/${order.id}`}>
+                          <CardBody className={this.definirStatus(order.status)}>
+                            <Row>
+                              <Col className="pr-1" md="12"><h6>Número: {order.id} / Assunto: {order.subject}</h6></Col>
+                            </Row>
+                          </CardBody>
+                        </Link>
+                      )}
+
                       <CardFooter style={{ textAlign: "center", margin: "0px" }}>
                         <Row>
                           <Col className="pr-1" md="3">
