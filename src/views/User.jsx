@@ -75,8 +75,6 @@ class User extends React.Component {
     this.setState({ invalid_password: invalid_password });
   }
 
-  
-
   atribuirConfirmacao(event) {
     let state = this.state;
     state[event.target.name] = event.target.value;
@@ -112,7 +110,7 @@ class User extends React.Component {
 
   tipoUsuario() {
     var texto = '';
-    if(this.state.user.contractor === true){
+    if(this.state.user.contractor === 'true'){
       return texto = "No momento seu usuário é do tipo Aluno!";
     }else{
       return texto = "No momento seu usuário é do tipo Instrutor!";

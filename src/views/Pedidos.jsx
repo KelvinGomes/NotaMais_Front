@@ -43,8 +43,8 @@ class Pedidos extends React.Component {
 
         let filter = this.state.filter;
         filter.studyArea = user.area_interest;
+        filter.educationLevel = user.education_level;
         this.setState({ filter: filter });
-        console.log(res);
       })
   }
 
@@ -56,11 +56,18 @@ class Pedidos extends React.Component {
 
   limparFiltro() {
     let filter = this.state.filter;
-    filter.educationLevel = '';
-    filter.studyArea = '';
     filter.dueDate = '';
     filter.number = '';
     filter.status = '';
+
+    if(this.state.user.contractor === 'true'){
+      filter.educationLevel = '';
+      filter.studyArea = '';
+    }else{
+      filter.educationLevel = this.state.user.education_level;
+      filter.studyArea = this.state.user.area_interest;
+    }
+
     this.setState({ filter: filter });
   }
 
@@ -186,7 +193,7 @@ class Pedidos extends React.Component {
                         <Col className="pr-1" md="3">
                           <FormGroup>
                             <Input type="select" name="studyArea" id="studyArea" value={this.state.filter.studyArea} onChange={this.atribuirValor}>
-                              <option value="0">Todos</option>
+                              <option value="">Todos</option>
                               <option value="1">Ciências Exatas</option>
                               <option value="2">Ciências Humanas</option>
                               <option value="3">Ciencias Biológicas</option>
@@ -205,16 +212,25 @@ class Pedidos extends React.Component {
                       <Col className="pr-1" md="1">
                         <label>Grau de instrução:</label>
                       </Col>
-                      <Col className="pr-1" md="3">
+                      {this.state.user.contractor === 'true' && (
+                        <Col className="pr-1" md="3">
                         <FormGroup>
                           <Input type="select" name="educationLevel" id="educationLevel" value={this.state.filter.educationLevel} onChange={this.atribuirValor}>
-                            <option value="0">Todos</option>
+                            <option value="">Todos</option>
                             <option value="1">Ensino Médio</option>
                             <option value="2">Ensino Técnico</option>
                             <option value="3">Ensino Superior</option>
                           </Input>
                         </FormGroup>
                       </Col>
+                      )}
+                      {this.state.user.contractor === 'false' && (
+                        <Col className="pr-1" md="3">
+                          <p>
+                            {this.definirGrau(this.state.user.education_level)}
+                          </p>
+                        </Col>
+                      )}
                     </Row>
                     <Row xs="4" style={{ margin: "4px" }}>
                       <Col className="pr-1" md="1">
@@ -233,7 +249,7 @@ class Pedidos extends React.Component {
                       <Col className="pr-1" md="3">
                         <FormGroup>
                           <Input type="select" name="status" id="status" value={this.state.filter.status} onChange={this.atribuirValor}>
-                            <option value="0">Todos</option>
+                            <option value="">Todos</option>
                             <option value="1">Requisitado</option>
                             <option value="2">Em andamento</option>
                             <option value="3">Concluído</option>
