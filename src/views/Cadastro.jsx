@@ -234,7 +234,7 @@ class Cadastro extends React.Component {
                                                     <Input hidden={this.state.btnAluno.hidden} type="select" name="education_level" value={this.state.user.education_level} onChange={this.atribuirValor}>
                                                         <option value="">Grau atendido</option>
                                                         <option value="1">Ensino médio</option>
-                                                        <option value="2">Técnico</option>
+                                                        <option value="2">Ensino Técnico</option>
                                                         <option value="3">Ensino superior</option>
                                                     </Input>
                                                 </FormGroup>

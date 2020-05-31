@@ -37,6 +37,7 @@ class User extends React.Component {
     this.confirmarSenha = this.confirmarSenha.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.atribuirConfirmacao = this.atribuirConfirmacao.bind(this);
+    this.tipoUsuario = this.tipoUsuario.bind(this);
   }
 
   atribuirValor(event) {
@@ -88,7 +89,6 @@ class User extends React.Component {
         let user = res.data.user;
         this.setState({ user: user});
         console.log(res.data.user);
-        
       })
     
    /* let url = `https://nota-mais.herokuapp.com/api/usuario/${id}`;
@@ -100,6 +100,15 @@ class User extends React.Component {
       })*/
   }
 
+  tipoUsuario() {
+    var texto = '';
+    if(this.state.user.contractor === true){
+      return texto = "No momento seu usuário é do tipo Aluno!";
+    }else{
+      return texto = "No momento seu usuário é do tipo Instrutor!";
+    }
+  }
+
   render() {
 
     if(this.state.user.contractor == true){
@@ -108,7 +117,7 @@ class User extends React.Component {
           <div className="content">
             <Row>
               <Col md="4" style={{ marginBottom: "30px" }}>
-                <Card style={{ height: "100%", maxHeight: "615px" }} className="card-user">
+                <Card className="card-user">
                   <div className="image">
                     <img
                       alt="..."
@@ -121,18 +130,18 @@ class User extends React.Component {
                         <img
                           alt="..."
                           className="avatar border-gray"
-                          src={require("assets/img/mike.jpg")}
+                          src={require("assets/img/nota+/Profile.png")}
                         />
                         <h5 className="title">{this.state.user.name}</h5>
                       </a>
-                      <p className="description">@chetfaker</p>
+                      <p className="description">@ {this.state.user.nickname}</p>
                     </div>
-                    <p style={{ height: "100%", maxHeight: "500px" }} className="description text-center">
-                      "Apaixonado por disceminar conhecimento"<br />
+                    <p style={{ height: "100%"}} className="description text-center">
+                      {this.tipoUsuario()}
                     </p>
                   </CardBody>
-                  <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", height: "80px", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px" }}>
-                    <div style={{ textAlign: "center", marginTop: "30px" }}>
+                  <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", height: "60px", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px" }}>
+                    <div style={{ textAlign: "center", marginTop: "20px" }}>
                       <CardLink href="/admin/quiz_descricao">Definir Perfil Estudantil</CardLink>
                     </div>
                   </CardFooter>

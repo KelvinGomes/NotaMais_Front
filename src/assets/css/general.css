@@ -130,7 +130,7 @@ body {
     margin-bottom: 20px;
 }
 
-.card_status_requisitado {
+.Requisitado {
     background-color: rgb(58, 132, 177);
     height: 100%;
     align-items: center;
@@ -139,7 +139,7 @@ body {
     border-top-right-radius: 10px;
 }
 
-.card_status_em_andamento {
+.Em andamento {
     background-color: rgb(255, 241, 116);
     height: 100%;
     align-items: center;
@@ -147,7 +147,7 @@ body {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-.card_status_concluido {
+.Concluído {
     background-color: rgb(98, 184, 90);
     height: 100%;
     align-items: center;
@@ -156,8 +156,17 @@ body {
     border-top-right-radius: 10px;
 }
 
-.card_status_cancelado {
+.Cancelado {
     background-color: rgb(223, 119, 101);
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.Inválido {
+    background-color: rgb(255, 174, 53);
     height: 100%;
     align-items: center;
     text-align: center;
@@ -319,7 +328,8 @@ body {
     max-width: 500px;
     align-items: center;
     align-content: center;
-    margin-top: 20px;
-    margin: 0 auto;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 35px;
     text-align: center;
 }

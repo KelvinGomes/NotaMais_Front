@@ -22,112 +22,183 @@ class Detalhes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uploadedFiles: []
+      uploadedFiles: [],
+      order: [],
     };
+
+    this.definirArea = this.definirArea.bind(this);
+    this.definirStatus = this.definirStatus.bind(this);
+    this.definirGrau = this.definirGrau.bind(this);
   }
 
-handleUpload = files => {
-  const uploadedFiles = files.map(file => ({
-    file,
-    id: uniqueId(),
-    name: file.name,
-    readableSize: filesize(file.size),
-    preview: URL.createObjectURL(file),
-    progress: 0,
-    uploaded: false,
-    error: false,
-    url: null,
-  }))
-
-  this.setState({
-    uploadedFiles: this.state.uploadedFiles.concat(uploadedFiles)
-  });
-
-  uploadedFiles.forEach(this.processUpload);
-};
-
-processUpload = (uploadedFile) => {
-  const data = new FormData();
-
-  data.append('file', uploadedFile.file, uploadedFile.name);
-  let token = localStorage.getItem('token');
-  axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
-  axios.post(`https://notamais-backend01.herokuapp.com/files`, data, {
-      onUploadProgress: e => {
-      const progress = parseInt(Math.round(e.loaded * 100/e.total))
-
-      this.updateFile(uploadedFile.id, {
-        progress,
+  async componentDidMount() {
+    const { id } = this.props.match.params;
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    await axios.get(`https://notamais-backend01.herokuapp.com/orders/${id}`)
+      .then(res => {
+        let order = res.data;
+        this.setState({ order: order });
+        console.log(order);
       })
-    }
-  }).then( response => {
-    this.updateFile(uploadedFile.id, {
-      uploaded: true,
-      id: response.data._id,
-      url: response.data.url
-    })
-  }).catch (() => {
-    this.updateFile(uploadedFile.id, {
-      error: true
-    })
-  });
-};
+  }
 
-updateFile = (id, data) => {
-  this.setState({uploadedFiles: this.state.uploadedFiles.map(uploadedFile => {
-    return id == uploadedFile.id 
-    ? { ...uploadedFile, ...data }
-    : uploadedFile;
-  })})
-};
+  definirArea(valor) {
+    var area = '';
+
+    switch (valor) {
+      case 1:
+        return area = 'Ciências Exatas';
+      case 2:
+        return area = 'Ciências Humanas';
+      case 3:
+        return area = 'Ciências Biológicas';
+      case 4:
+        return area = 'Linguagens e Códigos';
+      default:
+        return area = 'Inválido';
+    }
+  }
+
+  definirStatus(valor) {
+    var status = '';
+
+    switch (valor) {
+      case 1:
+        return status = 'Requisitado';
+      case 2:
+        return status = 'Em andamento';
+      case 3:
+        return status = 'Concluído';
+      case 4:
+        return status = 'Cancelado';
+      default:
+        return status = 'Inválido';
+    }
+  }
+
+  definirGrau(valor) {
+    var grau = '';
+
+    switch (valor) {
+      case 1:
+        return grau = 'Ensino Médio';
+      case 2:
+        return grau = 'Ensino Técnico';
+      case 3:
+        return grau = 'Ensino Superior';
+      default:
+        return grau = 'Inválido';
+    }
+  }
+
+  handleUpload = files => {
+    const uploadedFiles = files.map(file => ({
+      file,
+      id: uniqueId(),
+      name: file.name,
+      readableSize: filesize(file.size),
+      preview: URL.createObjectURL(file),
+      progress: 0,
+      uploaded: false,
+      error: false,
+      url: null,
+    }))
+
+    this.setState({
+      uploadedFiles: this.state.uploadedFiles.concat(uploadedFiles)
+    });
+
+    uploadedFiles.forEach(this.processUpload);
+  };
+
+  processUpload = (uploadedFile) => {
+    const data = new FormData();
+
+    data.append('file', uploadedFile.file, uploadedFile.name);
+    let token = localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    axios.post(`https://notamais-backend01.herokuapp.com/files`, data, {
+      onUploadProgress: e => {
+        const progress = parseInt(Math.round(e.loaded * 100 / e.total))
+
+        this.updateFile(uploadedFile.id, {
+          progress,
+        })
+      }
+    }).then(response => {
+      this.updateFile(uploadedFile.id, {
+        uploaded: true,
+        id: response.data.id,
+        url: response.data.url
+      })
+    }).catch(() => {
+      this.updateFile(uploadedFile.id, {
+        error: true
+      })
+    });
+  };
+
+  updateFile = (id, data) => {
+    this.setState({
+      uploadedFiles: this.state.uploadedFiles.map(uploadedFile => {
+        return id == uploadedFile.id
+          ? { ...uploadedFile, ...data }
+          : uploadedFile;
+      })
+    })
+  };
+
+  handleDelete = async id => {
+    let token = localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    await axios.delete(`https://notamais-backend01.herokuapp.com/files/${id}`);
+    this.setState({
+      uploadedFiles: this.state.uploadedFiles.filter(file => file.id !== id),
+    });
+  }
 
   render() {
     const { uploadedFiles } = this.state;
     return (
       <>
         <div className="content">
-          <Col className="coluna_descricao" md="12">
-            <CardTitle className="titulo">Definição de guidelines para softwares</CardTitle>
-            <Row>
+          <Row>
+            <Col className="pr-1" md="12">
+              <CardTitle className="titulo">{this.state.order.subject}</CardTitle>
               <Card>
                 <CardHeader style={{ backgroundColor: "rgb(58, 132, 177)", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
-
                   <Row style={{ textAlign: "center" }}>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Status</p><p>Concluído</p>
-                    </Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Área</p><p>Ciências Exatas</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Assunto</p><p>Desenvolvimento de sistemas</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Prazo</p><p>10/04/2020</p></Col>
+                    <Col className="pr-1" md="1"><p style={{ fontWeight: "bold" }}>Número</p><p>{this.state.order.id}</p></Col>
+                    <Col className="pr-1" md="2"><p style={{ fontWeight: "bold" }}>Status</p><p>{this.definirStatus(this.state.order.status)}</p></Col>
+                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Área</p><p>{this.definirArea(this.state.order.study_area)}</p></Col>
+                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Grau</p><p>{this.definirGrau(this.state.order.education_level)}</p></Col>
+                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Prazo</p><p>{this.state.order.due_date}</p></Col>
                   </Row>
-
                 </CardHeader>
                 <CardBody>
-                  <Col style={{ textAlign: "center" }}>
-                    <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
-                    <p>Necessito de ajuda para realizar a formulação de 10 guidelines para um projeto,
-                    cada guideline deve conter sua descrição
-                    um exemplo e uma justificativa. Maiores informações se encontram no arquivo em anexo
-                        </p>
-                  </Col>
+                  <Row style={{ textAlign: "center" }}>
+                    <Col className="coluna_descricao" md="12">
+                      <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
+                      <p>{this.state.order.description}</p>
+                    </Col>
+                  </Row>
                 </CardBody>
                 <CardFooter >
                   <div className="files_add">
-                    <p>Anexe os documentos referentes a atividade aqui!</p>
                     <Upload onUpload={this.handleUpload} />
-                    {!!uploadedFiles.length && <FileList files={uploadedFiles} />}
+                    {!!uploadedFiles.length && <FileList files={uploadedFiles} onDelete={this.handleDelete} />}
                   </div>
                 </CardFooter>
               </Card>
-            </Row>
+            </Col>
+          </Row>
 
-          </Col>
-
-          <Col className="coluna_descricao" md="12">
-            <CardTitle className="titulo">Propóstas ofertadas</CardTitle>
-            <Row>
+          <Row>
+            <Col className="pr-1" md="12">
+              <CardTitle className="titulo">Propóstas ofertadas</CardTitle>
               <Card>
                 <CardHeader style={{ backgroundColor: "rgb(58, 132, 177)", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
-
                   <Row style={{ textAlign: "center" }}>
                     <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Prestador</p><p>Amauri Junior</p></Col>
                     <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Data</p><p>05-04-2020</p></Col>
@@ -137,23 +208,18 @@ updateFile = (id, data) => {
                         <img src={require("assets/img/nota+/img-aceitar.png")} alt="aceitar" />
                         <p>Aceitar</p>
                       </a>
-
                     </Col>
                   </Row>
                 </CardHeader>
-
                 <CardBody>
                   <Col style={{ textAlign: "center" }}>
                     <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
-                    <p>Necessito de ajuda para realizar a formulação de 10 guidelines para um projeto,
-                    cada guideline deve conter sua descrição,
-                            um exemplo e uma justificativa. Maiores informações se encontram no arquivo em anexo.</p>
+                    <p>Necessito</p>
                   </Col>
                 </CardBody>
-
               </Card>
-            </Row>
-          </Col>
+            </Col>
+          </Row>
         </div>
       </>
     );

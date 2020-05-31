@@ -17,6 +17,7 @@ class Adicionar_Pedido extends React.Component {
         educationLevel: '',
         studyArea: '',
         dueDate: '',
+        status: 1
       }
     };
 
@@ -57,19 +58,31 @@ class Adicionar_Pedido extends React.Component {
             </CardHeader>
             <CardBody>
               <Form>
-                <Row>
+                <Row  style={{ margin: "10px" }}>
+                  <Col className="pr-1" md="12">
+                      <p>Qual o assunto da atividade?</p>
+                      <FormGroup>
+                        <Input
+                          name="subject"
+                          type="texto"
+                          value={this.state.order.subject} onChange={this.atribuirValor}
+                        />
+                      </FormGroup>
+                    </Col>
+                </Row>
+                <Row style={{ margin: "10px" }}>
                   <Col className="pr-1" md="4">
                     <p>Qual o grau de instrução necessário?</p>
                     <FormGroup>
                       <Input name="educationLevel" type="select" id="exampleSelect" value={this.state.order.educationLevel} onChange={this.atribuirValor}>
                         <option value="0">Todos</option>
                         <option value="1">Ensino médio</option>
-                        <option value="2">Técnico</option>
+                        <option value="2">Ensino Técnico</option>
                         <option value="3">Ensino superior</option>
                       </Input>
                     </FormGroup>
                   </Col>
-                  <Col className="pr-1" md="3">
+                  <Col className="pr-1" md="4">
                     <p>Em qual área se enquadra?</p>
                     <FormGroup>
                       <Input name="studyArea" type="select" id="exampleSelect" value={this.state.order.studyArea} onChange={this.atribuirValor}>
@@ -81,7 +94,7 @@ class Adicionar_Pedido extends React.Component {
                       </Input>
                     </FormGroup>
                   </Col>
-                  <Col className="pr-1" md="2">
+                  <Col className="pr-1" md="4">
                     <p>Para quando?</p>
                     <FormGroup>
                       <Input
@@ -91,18 +104,8 @@ class Adicionar_Pedido extends React.Component {
                       />
                     </FormGroup>
                   </Col>
-                  <Col className="pr-1" md="3">
-                    <p>Qual o assunto da atividade?</p>
-                    <FormGroup>
-                      <Input
-                        name="subject"
-                        type="texto"
-                        value={this.state.order.subject} onChange={this.atribuirValor}
-                      />
-                    </FormGroup>
-                  </Col>
                 </Row>
-                <Row>
+                <Row style={{ margin: "10px" }}>
                   <Col className="pr-1" md="12">
                     <p>Descrição</p>
                     <FormGroup>

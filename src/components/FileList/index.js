@@ -4,7 +4,7 @@ import { Container, FileInfo, Preview } from './stlyles';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import { MdCheckCircle, MdError, MdLink } from 'react-icons/md';
 
-const FileList = ({ files }) => (
+const FileList = ({ files, onDelete }) => (
     <Container>
         {files.map(uploadedFiles => (
             <li key = {uploadedFiles.id}>
@@ -13,9 +13,10 @@ const FileList = ({ files }) => (
                     <div>
                         <strong>{uploadedFiles.name}</strong>
                         <span>
-                            {uploadedFiles.readableSize}
+                            {uploadedFiles.readableSize}{" "}
                             { !!uploadedFiles.url && (
-                                <button onClick={() => { }}>Excluir</button>
+                                console.log(uploadedFiles.id),
+                                <button onClick={() => onDelete(uploadedFiles.id)}>Excluir</button>
                             )}
                         </span>
                     </div>
