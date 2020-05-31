@@ -15,22 +15,26 @@ import {
   Col
 } from "reactstrap";
 
+
+import { uniqueId } from 'lodash';
+import filesize from 'filesize';
+import Image from 'react-bootstrap/Image';
+
 class User extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       user: {
-        contractor: localStorage.getItem('contractor'),
         name: '',
+        email: '',
         nickname: '',
         phone: '',
         password: '',
-        area_interest: '',
-        education_level: ''
+        confirmPassword: '',
+        oldPassword: ''
       },
-      new_password: '',
-      confirm_password: '',
+      contractor: localStorage.getItem('contractor'),
       invalid_password: ''
     };
     this.submeter = this.submeter.bind(this);
@@ -45,6 +49,8 @@ class User extends React.Component {
 
   atribuirValor(event) {
     let user = this.state.user;
+    user.password = '';
+    this.setState({user: user});
     user[event.target.name] = event.target.value;
     this.setState({ user: user });
   }
@@ -53,9 +59,9 @@ class User extends React.Component {
   async submeter(event) {
     event.preventDefault();
     let user = this.state.user;
-    let new_password = this.state.new_password;
+    console.log('A: ', user.password, ' ', user.oldPassword);
     
-    await axios.put(`https://notamais-backend01.herokuapp.com/users`, user,new_password)
+    await axios.put(`https://notamais-backend01.herokuapp.com/users`, user.password, user.oldPassword, user.confirmPassword)
         .then(res => {
             window.alert("Atualização efetuada com sucesso!");
             //window.location.href = "/general/login";
@@ -67,7 +73,7 @@ class User extends React.Component {
 
   confirmarSenha() {
     let invalid_password = this.state.invalid_password;
-    if (this.state.user.password != this.state.confirm_password) {
+    if (this.state.user.password != this.state.user.confirmPassword) {
         invalid_password = 'confirmação inválida';
     } else {
         invalid_password = '';
@@ -112,7 +118,7 @@ class User extends React.Component {
 
   tipoUsuario() {
     var texto = '';
-    if(this.state.user.contractor === true){
+    if(this.state.contractor === true){
       return texto = "No momento seu usuário é do tipo Aluno!";
     }else{
       return texto = "No momento seu usuário é do tipo Instrutor!";
@@ -148,11 +154,14 @@ class User extends React.Component {
                       {this.tipoUsuario()}
                     </p>
                   </CardBody>
-                  <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", height: "60px", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px" }}>
-                    <div style={{ textAlign: "center", marginTop: "20px" }}>
-                      <CardLink href="/admin/quiz_descricao">Definir Perfil Estudantil</CardLink>
-                    </div>
-                  </CardFooter>
+                  {this.state.user.contractor === 'true' &&(
+                      <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", height: "60px", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px" }}>
+                      <div style={{ textAlign: "center", marginTop: "20px" }}>
+                        <CardLink href="/admin/quiz_descricao">Definir Perfil Estudantil</CardLink>
+                      </div>
+                    </CardFooter>
+                  )}
+                  
                 </Card>
               </Col>
               <Col md="8">
@@ -215,8 +224,8 @@ class User extends React.Component {
                             <label>Senha Atual</label>
                             <Input
                               minLength="6" maxLength="10"
-                              name="password" 
-                              value={this.state.user.password}  
+                              name="oldPassword" 
+                              value={this.state.user.oldPassword}  
                               onChange={this.atribuirValor}
                               type="password"
                             />
@@ -227,9 +236,9 @@ class User extends React.Component {
                             <label>Nova Senha</label>
                             <Input
                               minLength="6" maxLength="10"
-                              name="new_password" 
-                              value={this.state.new_password} 
-                              onChange={this.handleChange}
+                              name="password" 
+                              value={this.state.user.password} 
+                              onChange={this.atribuirValor}
                               type="password"
                             />
                           </FormGroup>
@@ -240,7 +249,7 @@ class User extends React.Component {
                             <Input
                               minLength="6" maxLength="10"
                               name="confirm_password" 
-                              value={this.state.confirm_password} 
+                              value={this.state.user.confirmPassword} 
                               onChange={this.handleChange}
                               
                               type="password"
