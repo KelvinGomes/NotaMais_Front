@@ -185,6 +185,11 @@ class Detalhes extends React.Component {
                   </Row>
                 </CardBody>
                 <CardFooter >
+                  <Row style={{ textAlign: "center" }}>
+                    <Col className="coluna_descricao" md="12">
+                      <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Anexos</p>
+                    </Col>
+                  </Row>
                   <div className="files_add">
                     <Upload onUpload={this.handleUpload} />
                     {!!uploadedFiles.length && <FileList files={uploadedFiles} onDelete={this.handleDelete} />}

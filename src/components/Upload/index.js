@@ -5,7 +5,7 @@ import { DropContainer, UploadMessage} from './styles';
 export default class Upload extends React.Component{
 renderDragMessage  = (isDragActive, isDragReject) => {
     if(!isDragActive){
-        return <UploadMessage>Arraste seus arquivos aqui...</UploadMessage>
+        return <UploadMessage>Arraste seus arquivos aqui ( img / pdf / doc / docx ) ...</UploadMessage>
     }
     if(isDragReject){
         return <UploadMessage type = "error">Tipo de arquivo não suportado!</UploadMessage>
