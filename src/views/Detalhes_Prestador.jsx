@@ -21,7 +21,7 @@ class Detalhes_Prestador extends React.Component {
       uploadedFiles: [],
       order: [],
       date: {
-        now:  new Date().toLocaleString().substr(0, 10)
+        now:  new Date().toLocaleString()
       }
     };
 
@@ -36,9 +36,9 @@ class Detalhes_Prestador extends React.Component {
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
     await axios.get(`https://notamais-backend01.herokuapp.com/orders/${id}`)
       .then(res => {
-        let order = res.data;
+        let order = res.data.order;
         this.setState({ order: order });
-        console.log(order);
+        console.log(res.data);
       })
   }
 
@@ -104,8 +104,8 @@ class Detalhes_Prestador extends React.Component {
                   <Row style={{ textAlign: "center" }}>
                     <Col className="pr-1" md="1"><p style={{ fontWeight: "bold" }}>Número</p><p>{this.state.order.id}</p></Col>
                     <Col className="pr-1" md="2"><p style={{ fontWeight: "bold" }}>Status</p><p>{this.definirStatus(this.state.order.status)}</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Área</p><p>{this.definirArea(this.state.order.study_area)}</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Grau</p><p>{this.definirGrau(this.state.order.education_level)}</p></Col>
+                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Área</p><p>{this.definirArea(this.state.order.studyArea)}</p></Col>
+                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Grau</p><p>{this.definirGrau(this.state.order.educationLevel)}</p></Col>
                     <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Prazo</p><p>{this.state.order.due_date}</p></Col>
                   </Row>
                 </CardHeader>
@@ -127,7 +127,7 @@ class Detalhes_Prestador extends React.Component {
           </Row>
           <Row>
             <Col className="pr-1" md="12">
-              <CardTitle className="titulo">Propóstas ofertadas</CardTitle>
+              <CardTitle className="titulo">Ofertar propósta</CardTitle>
               <Card>
               <Form>
                 <CardBody>
@@ -140,7 +140,7 @@ class Detalhes_Prestador extends React.Component {
                   <Row style={{ textAlign: "center" }}>
                     <Col className="pr-1" md="5">
                       <p style={{ fontWeight: "bold" }}>Data</p>
-                      <p>{this.state.date.now}</p>
+                      <p>{this.state.date.now.substr(0, 10)}</p>
                     </Col>
                     <Col className="pr-1" md="2">
                       <p style={{ fontWeight: "bold" }}>Valor (R$)</p>
@@ -157,6 +157,7 @@ class Detalhes_Prestador extends React.Component {
                 </Form>
               </Card>
 
+              <CardTitle className="titulo">Propósta ofertada</CardTitle>
               <Card>
                 <CardBody>
                   <Col style={{ textAlign: "center" }}>

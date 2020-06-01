@@ -113,7 +113,6 @@ class Pedidos extends React.Component {
       .then(res => {
         let orders = res.data;
         this.setState({ orders: orders })
-        console.log(orders);
       })
   }
 
