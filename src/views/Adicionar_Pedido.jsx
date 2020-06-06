@@ -66,6 +66,7 @@ class Adicionar_Pedido extends React.Component {
                           name="subject"
                           type="texto"
                           value={this.state.order.subject} onChange={this.atribuirValor}
+                          maxLength="80"
                         />
                       </FormGroup>
                     </Col>
@@ -113,6 +114,7 @@ class Adicionar_Pedido extends React.Component {
                         name="description"
                         type="textarea"
                         value={this.state.order.description} onChange={this.atribuirValor}
+                        maxLength="450"
                       />
                     </FormGroup>
                   </Col>

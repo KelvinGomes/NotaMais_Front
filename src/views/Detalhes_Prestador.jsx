@@ -205,7 +205,7 @@ class Detalhes_Prestador extends React.Component {
                     <Col md="11" style={{ textAlign: "center", marginRight: "auto", marginLeft: "auto", marginBottom: "20px" }}>
                       <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição *</p>
                       <FormGroup>
-                        <Input name="description" minLength = "50" value={this.state.offer.description} onChange={this.atribuirValor} maxLength="450" type="text" />
+                        <Input name="description" value={this.state.offer.description} onChange={this.atribuirValor} maxLength="450" type="text" />
                       </FormGroup>
                     </Col>
                   </CardBody>
