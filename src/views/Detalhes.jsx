@@ -24,6 +24,7 @@ class Detalhes extends React.Component {
     this.state = {
       uploadedFiles: [],
       order: [],
+      offer: [],
     };
 
     this.definirArea = this.definirArea.bind(this);

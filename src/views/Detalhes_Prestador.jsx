@@ -11,7 +11,8 @@ import {
   CardFooter,
   Col,
   Form,
-  Input
+  Input,
+  FormGroup
 } from "reactstrap";
 
 import Upload from "../components/Upload";
@@ -25,14 +26,22 @@ class Detalhes_Prestador extends React.Component {
     this.state = {
       uploadedFiles: [],
       order: [],
+      offer: {
+        value: '',
+        description: '',
+        orderId: ''
+      },
+      offers: [],
       date: {
-        now:  new Date().toLocaleString()
+        now: new Date().toLocaleString()
       }
     };
 
     this.definirArea = this.definirArea.bind(this);
     this.definirStatus = this.definirStatus.bind(this);
     this.definirGrau = this.definirGrau.bind(this);
+    this.ofertarProposta = this.ofertarProposta.bind(this);
+    this.atribuirValor = this.atribuirValor.bind(this);
   }
 
   async componentDidMount() {
@@ -44,7 +53,11 @@ class Detalhes_Prestador extends React.Component {
         let order = res.data.order;
         let files = res.data.orderFiles;
         this.setState({ order: order });
-        console.log(res.data);
+        this.setState({
+          offer: {
+            orderId: order.id,
+          }
+        });
 
         this.setState({
           uploadedFiles: files.map(file => ({
@@ -56,7 +69,20 @@ class Detalhes_Prestador extends React.Component {
             url: file.url,
           }))
         });
-      })
+      })   
+      
+      await axios.get(`https://notamais-backend01.herokuapp.com/offers/${id}`)
+      .then(res => {
+        let offers = res.data;
+        this.setState({ offers: offers });
+        console.log(offers);
+      })  
+  }
+
+  atribuirValor(event) {
+    let offer = this.state.offer;
+    offer[event.target.name] = event.target.value;
+    this.setState({ offer: offer });
   }
 
   definirArea(valor) {
@@ -108,6 +134,24 @@ class Detalhes_Prestador extends React.Component {
     }
   }
 
+  async ofertarProposta() {
+    let offer = this.state.offer;
+
+    if(offer.value > -1 && offer.description != null){
+      let token = await localStorage.getItem('token');
+      axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+      await axios.post(`https://notamais-backend01.herokuapp.com/offers`, offer)
+        .then(res => {
+          window.alert("Propósta ofertada com sucesso!");
+        })
+        .catch((error) => {
+          window.alert("Erro ao ofertar propósta!");
+        });
+    }else{
+      window.alert("Erro: o valor não pode ser negativo e a descrição não pode ser em branco!");
+    }
+  }
+
   componentWillUnmount() {
     this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
   }
@@ -144,9 +188,9 @@ class Detalhes_Prestador extends React.Component {
                   </Row>
                   <div className="files_add">
                     {this.state.uploadedFiles == '' && (
-                      <p>Sem arquivos de anexo!</p>
+                      <p>Sem arquivos em anexo!</p>
                     )}
-                    <FileList files={uploadedFiles}/>
+                    <FileList files={uploadedFiles} />
                   </div>
                 </CardFooter>
               </Card>
@@ -156,31 +200,36 @@ class Detalhes_Prestador extends React.Component {
             <Col className="pr-1" md="12">
               <CardTitle className="titulo">Ofertar propósta</CardTitle>
               <Card>
-              <Form>
-                <CardBody>
-                  <Col md="11" style={{ textAlign: "center", marginRight: "auto", marginLeft: "auto", marginBottom: "20px" }}>
-                    <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
-                    <Input maxLength="450" type="text"/>
-                  </Col>
-                </CardBody>
-                <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", borderBottomRightRadius: "15px", borderBottomLeftRadius: "15px" }}>
-                  <Row style={{ textAlign: "center" }}>
-                    <Col className="pr-1" md="5">
-                      <p style={{ fontWeight: "bold" }}>Data</p>
-                      <p>{this.state.date.now.substr(0, 10)}</p>
+                <Form>
+                  <CardBody>
+                    <Col md="11" style={{ textAlign: "center", marginRight: "auto", marginLeft: "auto", marginBottom: "20px" }}>
+                      <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição *</p>
+                      <FormGroup>
+                        <Input name="description" minLength = "50" value={this.state.offer.description} onChange={this.atribuirValor} maxLength="450" type="text" />
+                      </FormGroup>
                     </Col>
-                    <Col className="pr-1" md="2">
-                      <p style={{ fontWeight: "bold" }}>Valor (R$)</p>
-                      <Input type="number" style={{ backgroundColor: "rgb(58, 132, 177)", color: "black"}}/>
-                    </Col>
-                    <Col className="pr-1" md="5">
-                      <a>
-                        <img style={{ margin: "5px"}}src={require("assets/img/nota+/Icone_adicionar.png")} alt="Dar lance" />
-                        <p>Dar lance</p>
-                      </a>
-                    </Col>
-                  </Row>
-                </CardFooter>
+                  </CardBody>
+                  <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", borderBottomRightRadius: "15px", borderBottomLeftRadius: "15px" }}>
+                    <Row style={{ textAlign: "center" }}>
+                      <Col className="pr-1" md="5">
+                        <p style={{ fontWeight: "bold" }}>Data</p>
+                        <p>{this.state.date.now.substr(0, 10)}</p>
+                      </Col>
+                      <Col className="pr-1" md="2">
+                        <p style={{ fontWeight: "bold" }}>Valor (R$) *</p>
+                        <FormGroup>
+                          <Input name="value" value={this.state.offer.value} onChange={this.atribuirValor} type="number" style={{ backgroundColor: "rgb(58, 132, 177)", color: "black" }} />
+                        </FormGroup>
+                      </Col>
+                      <Col className="pr-1" md="5">
+                        <FormGroup>
+                          <img type="submit" style={{ margin: "5px" }} src={require("assets/img/nota+/Icone_adicionar.png")}
+                            alt="Dar lance" onClick={this.ofertarProposta} />
+                          <p>Dar lance</p>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                  </CardFooter>
                 </Form>
               </Card>
 

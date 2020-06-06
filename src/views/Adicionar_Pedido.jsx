@@ -42,7 +42,7 @@ class Adicionar_Pedido extends React.Component {
         window.location.href = "/admin/pedidos";
       })
       .catch((error) => {
-        window.alert("Erro ao gerar pedido!");
+        window.alert("Erro: todos os campos são de preechimento obrigatório!");
       });
   }
   render() {
@@ -60,7 +60,7 @@ class Adicionar_Pedido extends React.Component {
               <Form>
                 <Row  style={{ margin: "10px" }}>
                   <Col className="pr-1" md="12">
-                      <p>Qual o assunto da atividade?</p>
+                      <p>Qual o assunto da atividade? *</p>
                       <FormGroup>
                         <Input
                           name="subject"
@@ -72,7 +72,7 @@ class Adicionar_Pedido extends React.Component {
                 </Row>
                 <Row style={{ margin: "10px" }}>
                   <Col className="pr-1" md="4">
-                    <p>Qual o grau de instrução necessário?</p>
+                    <p>Qual o grau de instrução necessário? *</p>
                     <FormGroup>
                       <Input name="educationLevel" type="select" id="exampleSelect" value={this.state.order.educationLevel} onChange={this.atribuirValor}>
                         <option value="0">Todos</option>
@@ -83,7 +83,7 @@ class Adicionar_Pedido extends React.Component {
                     </FormGroup>
                   </Col>
                   <Col className="pr-1" md="4">
-                    <p>Em qual área se enquadra?</p>
+                    <p>Em qual área se enquadra? *</p>
                     <FormGroup>
                       <Input name="studyArea" type="select" id="exampleSelect" value={this.state.order.studyArea} onChange={this.atribuirValor}>
                         <option value="0">Todos</option>
@@ -95,7 +95,7 @@ class Adicionar_Pedido extends React.Component {
                     </FormGroup>
                   </Col>
                   <Col className="pr-1" md="4">
-                    <p>Para quando?</p>
+                    <p>Para quando? *</p>
                     <FormGroup>
                       <Input
                         value={this.state.order.dueDate} onChange={this.atribuirValor}
@@ -107,7 +107,7 @@ class Adicionar_Pedido extends React.Component {
                 </Row>
                 <Row style={{ margin: "10px" }}>
                   <Col className="pr-1" md="12">
-                    <p>Descrição</p>
+                    <p>Descrição *</p>
                     <FormGroup>
                       <Input
                         name="description"
