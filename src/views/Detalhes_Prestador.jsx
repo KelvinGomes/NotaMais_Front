@@ -14,6 +14,11 @@ import {
   Input
 } from "reactstrap";
 
+import Upload from "../components/Upload";
+import FileList from "../components/FileList";
+import { uniqueId } from 'lodash';
+import filesize from 'filesize';
+
 class Detalhes_Prestador extends React.Component {
   constructor(props) {
     super(props);
@@ -37,8 +42,20 @@ class Detalhes_Prestador extends React.Component {
     await axios.get(`https://notamais-backend01.herokuapp.com/orders/${id}`)
       .then(res => {
         let order = res.data.order;
+        let files = res.data.orderFiles;
         this.setState({ order: order });
         console.log(res.data);
+
+        this.setState({
+          uploadedFiles: files.map(file => ({
+            id: file.id,
+            name: file.name,
+            readableSize: filesize(file.size),
+            preview: file.url,
+            uploaded: true,
+            url: file.url,
+          }))
+        });
       })
   }
 
@@ -91,8 +108,12 @@ class Detalhes_Prestador extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
+  }
 
   render() {
+    const { uploadedFiles } = this.state;
     return (
       <>
         <div className="content">
@@ -104,8 +125,8 @@ class Detalhes_Prestador extends React.Component {
                   <Row style={{ textAlign: "center" }}>
                     <Col className="pr-1" md="1"><p style={{ fontWeight: "bold" }}>Número</p><p>{this.state.order.id}</p></Col>
                     <Col className="pr-1" md="2"><p style={{ fontWeight: "bold" }}>Status</p><p>{this.definirStatus(this.state.order.status)}</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Área</p><p>{this.definirArea(this.state.order.studyArea)}</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Grau</p><p>{this.definirGrau(this.state.order.educationLevel)}</p></Col>
+                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Área</p><p>{this.definirArea(this.state.order.study_area)}</p></Col>
+                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Grau</p><p>{this.definirGrau(this.state.order.education_level)}</p></Col>
                     <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Prazo</p><p>{this.state.order.due_date}</p></Col>
                   </Row>
                 </CardHeader>
@@ -121,6 +142,12 @@ class Detalhes_Prestador extends React.Component {
                       <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Anexos</p>
                     </Col>
                   </Row>
+                  <div className="files_add">
+                    {this.state.uploadedFiles == '' && (
+                      <p>Sem arquivos de anexo!</p>
+                    )}
+                    <FileList files={uploadedFiles}/>
+                  </div>
                 </CardFooter>
               </Card>
             </Col>
