@@ -14,7 +14,7 @@ const FileList = ({ files, onDelete }) => (
                         <strong>{uploadedFiles.name}</strong>
                         <span>
                             {uploadedFiles.readableSize}{" "}
-                            { !!uploadedFiles.url && (
+                            { !!uploadedFiles.url && localStorage.getItem('contractor') == 'true' && (
                                 console.log(uploadedFiles.id),
                                 <button onClick={() => onDelete(uploadedFiles.id)}>Excluir</button>
                             )}

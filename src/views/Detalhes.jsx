@@ -24,6 +24,7 @@ class Detalhes extends React.Component {
     this.state = {
       uploadedFiles: [],
       order: [],
+      offer: [],
     };
 
     this.definirArea = this.definirArea.bind(this);
@@ -38,8 +39,22 @@ class Detalhes extends React.Component {
     await axios.get(`https://notamais-backend01.herokuapp.com/orders/${id}`)
       .then(res => {
         let order = res.data.order;
+        let files = res.data.orderFiles;
         this.setState({ order: order });
+
+        this.setState({
+          uploadedFiles: files.map(file => ({
+            id: file.id,
+            name: file.name,
+            readableSize: filesize(file.size),
+            preview: file.url,
+            uploaded: true,
+            url: file.url,
+          }))
+        });
       })
+
+    
   }
 
   definirArea(valor) {
@@ -158,6 +173,10 @@ class Detalhes extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
+  }
+
   render() {
     const { uploadedFiles } = this.state;
     return (
@@ -171,8 +190,8 @@ class Detalhes extends React.Component {
                   <Row style={{ textAlign: "center" }}>
                     <Col className="pr-1" md="1"><p style={{ fontWeight: "bold" }}>Número</p><p>{this.state.order.id}</p></Col>
                     <Col className="pr-1" md="2"><p style={{ fontWeight: "bold" }}>Status</p><p>{this.definirStatus(this.state.order.status)}</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Área</p><p>{this.definirArea(this.state.order.studyArea)}</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Grau</p><p>{this.definirGrau(this.state.order.educationLevel)}</p></Col>
+                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Área</p><p>{this.definirArea(this.state.order.study_area)}</p></Col>
+                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Grau</p><p>{this.definirGrau(this.state.order.education_level)}</p></Col>
                     <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Prazo</p><p>{this.state.order.due_date}</p></Col>
                   </Row>
                 </CardHeader>
