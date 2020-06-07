@@ -29,7 +29,7 @@ class Detalhes_Prestador extends React.Component {
       offer: {
         value: '',
         description: '',
-        orderId: ''
+        orderId: '',
       },
       offers: [],
       date: {
@@ -69,14 +69,17 @@ class Detalhes_Prestador extends React.Component {
             url: file.url,
           }))
         });
-      })   
-      
-      await axios.get(`https://notamais-backend01.herokuapp.com/offers/${id}`)
+      })
+
+    await axios.get(`https://notamais-backend01.herokuapp.com/offers/${id}`)
       .then(res => {
-        let offers = res.data;
-        this.setState({ offers: offers });
-        console.log(offers);
-      })  
+        console.log(res.data);
+        if(res.data.offers[0] != null){
+          let offers = res.data.offers[0];
+          this.setState({ offers: offers });
+          console.log(this.state.offers);
+        }
+      })
   }
 
   atribuirValor(event) {
@@ -109,7 +112,7 @@ class Detalhes_Prestador extends React.Component {
       case 1:
         return status = 'Requisitado';
       case 2:
-        return status = 'Em andamento';
+        return status = 'Processando';
       case 3:
         return status = 'Concluído';
       case 4:
@@ -136,18 +139,19 @@ class Detalhes_Prestador extends React.Component {
 
   async ofertarProposta() {
     let offer = this.state.offer;
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
 
-    if(offer.value > -1 && offer.description != null){
-      let token = await localStorage.getItem('token');
-      axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    if (offer.value > -1 && offer.description != null) {
       await axios.post(`https://notamais-backend01.herokuapp.com/offers`, offer)
         .then(res => {
           window.alert("Propósta ofertada com sucesso!");
+          window.location.reload();
         })
         .catch((error) => {
           window.alert("Erro ao ofertar propósta!");
         });
-    }else{
+    } else {
       window.alert("Erro: o valor não pode ser negativo e a descrição não pode ser em branco!");
     }
   }
@@ -198,57 +202,63 @@ class Detalhes_Prestador extends React.Component {
           </Row>
           <Row>
             <Col className="pr-1" md="12">
-              <CardTitle className="titulo">Ofertar propósta</CardTitle>
-              <Card>
-                <Form>
-                  <CardBody>
-                    <Col md="11" style={{ textAlign: "center", marginRight: "auto", marginLeft: "auto", marginBottom: "20px" }}>
-                      <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição *</p>
-                      <FormGroup>
-                        <Input name="description" value={this.state.offer.description} onChange={this.atribuirValor} maxLength="450" type="text" />
-                      </FormGroup>
-                    </Col>
-                  </CardBody>
-                  <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", borderBottomRightRadius: "15px", borderBottomLeftRadius: "15px" }}>
-                    <Row style={{ textAlign: "center" }}>
-                      <Col className="pr-1" md="5">
-                        <p style={{ fontWeight: "bold" }}>Data</p>
-                        <p>{this.state.date.now.substr(0, 10)}</p>
+              {this.state.offers == '' && (
+                <>
+                  <CardTitle className="titulo">Ofertar propósta</CardTitle>
+                  <Card>
+                    <Form>
+                      <CardBody>
+                        <Col md="11" style={{ textAlign: "center", marginRight: "auto", marginLeft: "auto", marginBottom: "20px" }}>
+                          <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição *</p>
+                          <FormGroup>
+                            <Input name="description" value={this.state.offer.description} onChange={this.atribuirValor} maxLength="450" type="text" />
+                          </FormGroup>
+                        </Col>
+                      </CardBody>
+                      <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", borderBottomRightRadius: "15px", borderBottomLeftRadius: "15px" }}>
+                        <Row style={{ textAlign: "center" }}>
+                          <Col className="pr-1" md="5">
+                            <p style={{ fontWeight: "bold" }}>Data</p>
+                            <p>{this.state.date.now.substr(0, 10)}</p>
+                          </Col>
+                          <Col className="pr-1" md="2">
+                            <p style={{ fontWeight: "bold" }}>Valor (R$) *</p>
+                            <FormGroup>
+                              <Input name="value" value={this.state.offer.value} onChange={this.atribuirValor} type="number" style={{ backgroundColor: "rgb(58, 132, 177)", color: "black" }} />
+                            </FormGroup>
+                          </Col>
+                          <Col className="pr-1" md="5">
+                            <FormGroup>
+                              <img type="submit" style={{ margin: "5px" }} src={require("assets/img/nota+/Icone_adicionar.png")}
+                                alt="Dar lance" onClick={this.ofertarProposta} />
+                              <p>Dar lance</p>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                      </CardFooter>
+                    </Form>
+                  </Card>
+                </>
+              )}
+              {this.state.offers != '' && (
+                <>
+                  <CardTitle className="titulo">Propósta ofertada</CardTitle>
+                  <Card>
+                    <CardBody>
+                      <Col style={{ textAlign: "center" }}>
+                        <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
+                        <p>{this.state.offers.description}</p>
                       </Col>
-                      <Col className="pr-1" md="2">
-                        <p style={{ fontWeight: "bold" }}>Valor (R$) *</p>
-                        <FormGroup>
-                          <Input name="value" value={this.state.offer.value} onChange={this.atribuirValor} type="number" style={{ backgroundColor: "rgb(58, 132, 177)", color: "black" }} />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pr-1" md="5">
-                        <FormGroup>
-                          <img type="submit" style={{ margin: "5px" }} src={require("assets/img/nota+/Icone_adicionar.png")}
-                            alt="Dar lance" onClick={this.ofertarProposta} />
-                          <p>Dar lance</p>
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </CardFooter>
-                </Form>
-              </Card>
-
-              <CardTitle className="titulo">Propósta ofertada</CardTitle>
-              <Card>
-                <CardBody>
-                  <Col style={{ textAlign: "center" }}>
-                    <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
-                    <p>Necessito</p>
-                  </Col>
-                </CardBody>
-                <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", borderBottomRightRadius: "15px", borderBottomLeftRadius: "15px" }}>
-                  <Row style={{ textAlign: "center" }}>
-                    <Col className="pr-1" md="6"><p style={{ fontWeight: "bold" }}>Data</p><p>05-04-2020</p></Col>
-                    <Col className="pr-1" md="6"><p style={{ fontWeight: "bold" }}>Valor</p><p>R$ 70,00</p></Col>
-                  </Row>
-                </CardFooter>
-              </Card>
-
+                    </CardBody>
+                    <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", borderBottomRightRadius: "15px", borderBottomLeftRadius: "15px" }}>
+                      <Row style={{ textAlign: "center" }}>
+                        <Col className="pr-1" md="6"><p style={{ fontWeight: "bold" }}>Data</p><p>{this.state.offers.createdAt}</p></Col>
+                        <Col className="pr-1" md="6"><p style={{ fontWeight: "bold" }}>Valor (R$)</p><p>{this.state.offers.value}</p></Col>
+                      </Row>
+                    </CardFooter>
+                  </Card>
+                </>
+              )}
             </Col>
           </Row>
         </div>

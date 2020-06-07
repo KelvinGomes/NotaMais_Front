@@ -24,18 +24,21 @@ class Detalhes extends React.Component {
     this.state = {
       uploadedFiles: [],
       order: [],
-      offer: [],
+      offers: [],
+      userOrder: []
     };
 
     this.definirArea = this.definirArea.bind(this);
     this.definirStatus = this.definirStatus.bind(this);
     this.definirGrau = this.definirGrau.bind(this);
+    this.aceitarProposta = this.aceitarProposta.bind(this);
   }
 
   async componentDidMount() {
     const { id } = this.props.match.params;
     let token = await localStorage.getItem('token');
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+
     await axios.get(`https://notamais-backend01.herokuapp.com/orders/${id}`)
       .then(res => {
         let order = res.data.order;
@@ -54,7 +57,11 @@ class Detalhes extends React.Component {
         });
       })
 
-    
+    await axios.get(`https://notamais-backend01.herokuapp.com/offers/${id}`)
+      .then(res => {
+        let offers = res.data.offers;
+        this.setState({ offers: offers });
+      })
   }
 
   definirArea(valor) {
@@ -81,7 +88,7 @@ class Detalhes extends React.Component {
       case 1:
         return status = 'Requisitado';
       case 2:
-        return status = 'Em andamento';
+        return status = 'Processando';
       case 3:
         return status = 'Concluído';
       case 4:
@@ -173,6 +180,22 @@ class Detalhes extends React.Component {
     });
   }
 
+  async aceitarProposta(idOffer) {
+    const { id } = this.props.match.params;
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    await axios.put(` https://notamais-backend01.herokuapp.com/orders/${id}`, { selectedOffer: idOffer, status: 2 })
+      .then(res => {
+        window.alert("Propósta aceita com sucesso!");
+        window.location.reload();
+      })
+      .catch((error) => {
+        window.alert("Erro ao aceitar propósta!");
+      });
+
+    
+  }
+
   componentWillUnmount() {
     this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
   }
@@ -217,33 +240,77 @@ class Detalhes extends React.Component {
               </Card>
             </Col>
           </Row>
+          {this.state.order.selected_offer_id == null && (
+            <CardTitle className="titulo">Propóstas ofertadas</CardTitle>
+          )}
+          {this.state.order.selected_offer_id != null && (
+            <CardTitle className="titulo">Propósta aceita</CardTitle>
+          )}
+          {this.state.offers == '' && (
+            <p style={{ textAlign: "center", marginTop: "30px" }}>Você ainda não recebeu nenhuma propósta!</p>
+          )}
 
-          <Row>
-            <Col className="pr-1" md="12">
-              <CardTitle className="titulo">Propóstas ofertadas</CardTitle>
-              <Card>
-                <CardHeader style={{ backgroundColor: "rgb(58, 132, 177)", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
-                  <Row style={{ textAlign: "center" }}>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Prestador</p><p>Amauri Junior</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Data</p><p>05-04-2020</p></Col>
-                    <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Valor</p><p>R$ 70,00</p></Col>
-                    <Col className="pr-1" md="3">
-                      <a>
-                        <img src={require("assets/img/nota+/img-aceitar.png")} alt="aceitar" />
-                        <p>Aceitar</p>
-                      </a>
+          {this.state.order.selected_offer_id != null && this.state.offers.map((offer) => {
+            return (
+              <>
+                {offer.id === this.state.order.selected_offer_id && (
+                  <Row key={offer.id}>
+                    <Col className="pr-1" md="12">
+                      <Card>
+                        <CardHeader style={{ backgroundColor: "rgb(58, 132, 177)", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
+                          <Row style={{ textAlign: "center" }}>
+                            <Col className="pr-1" md="4"><p style={{ fontWeight: "bold" }}>Prestador</p><p>{offer.provider.name}</p></Col>
+                            <Col className="pr-1" md="4"><p style={{ fontWeight: "bold" }}>Data</p><p>{offer.createdAt}</p></Col>
+                            <Col className="pr-1" md="4"><p style={{ fontWeight: "bold" }}>Valor (R$)</p><p>{offer.value}</p></Col>
+                            <Col className="pr-1" md="3">
+                            </Col>
+                          </Row>
+                        </CardHeader>
+                        <CardBody>
+                          <Col style={{ textAlign: "center" }}>
+                            <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
+                            <p>{offer.description}</p>
+                          </Col>
+                        </CardBody>
+                      </Card>
                     </Col>
                   </Row>
-                </CardHeader>
-                <CardBody>
-                  <Col style={{ textAlign: "center" }}>
-                    <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
-                    <p>Necessito</p>
+                )}
+              </>
+            )
+          })}
+
+          {this.state.order.selected_offer_id == null && this.state.offers.map((offer) => {
+            return (
+              <>
+                <Row key={offer.id}>
+                  <Col className="pr-1" md="12">
+                    <Card>
+                      <CardHeader style={{ backgroundColor: "rgb(58, 132, 177)", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
+                        <Row style={{ textAlign: "center" }}>
+                          <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Prestador</p><p>{offer.provider.name}</p></Col>
+                          <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Data</p><p>{offer.createdAt}</p></Col>
+                          <Col className="pr-1" md="3"><p style={{ fontWeight: "bold" }}>Valor</p><p>{offer.value}</p></Col>
+                          <Col className="pr-1" md="3">
+                            <a>
+                              <img src={require("assets/img/nota+/img-aceitar.png")} alt="aceitar" type="submit" onClick={() => this.aceitarProposta(offer.id)} />
+                              <p>Aceitar</p>
+                            </a>
+                          </Col>
+                        </Row>
+                      </CardHeader>
+                      <CardBody>
+                        <Col style={{ textAlign: "center" }}>
+                          <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
+                          <p>{offer.description}</p>
+                        </Col>
+                      </CardBody>
+                    </Card>
                   </Col>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+                </Row>
+              </>
+            )
+          })}
         </div>
       </>
     );
