@@ -22,7 +22,8 @@ class Pedidos extends React.Component {
       orders: [],
       user: {
         contractor: localStorage.getItem('contractor')
-      }
+      },
+      disabled_: ''
     };
     this.atribuirValor = this.atribuirValor.bind(this);
     this.limparFiltro = this.limparFiltro.bind(this);
@@ -30,6 +31,15 @@ class Pedidos extends React.Component {
     this.definirArea = this.definirArea.bind(this);
     this.definirStatus = this.definirStatus.bind(this);
     this.definirGrau = this.definirGrau.bind(this);
+    this.desabilitar = this.desabilitar.bind(this);
+  }
+
+
+  desabilitar(event){
+    let filter = this.state.filter;
+  
+    console.log(filter[event.target.value])
+    this.state.disabled_ = "true";
   }
 
   async componentDidMount() {
@@ -52,6 +62,8 @@ class Pedidos extends React.Component {
     let filter = this.state.filter;
     filter[event.target.name] = event.target.value;
     this.setState({ filter: filter });
+
+
   }
 
   limparFiltro() {
@@ -181,7 +193,7 @@ class Pedidos extends React.Component {
                       <Col className="pr-1" md="3">
                         <FormGroup>
                           <Input name="dueDate" id="dueDate" value={this.state.filter.dueDate} onChange={this.atribuirValor}
-                            type="date"
+                            type="date" disabled = {this.state.disabled_}
                           />
                         </FormGroup>
                       </Col>
@@ -191,7 +203,7 @@ class Pedidos extends React.Component {
                       {this.state.user.contractor === 'true' && (
                         <Col className="pr-1" md="3">
                           <FormGroup>
-                            <Input type="select" name="studyArea" id="studyArea" value={this.state.filter.studyArea} onChange={this.atribuirValor}>
+                            <Input type="select" name="studyArea" id="studyArea" value={this.state.filter.studyArea} onChange={this.atribuirValor} disabled = {this.state.disabled_}>
                               <option value="">Todos</option>
                               <option value="1">Ciências Exatas</option>
                               <option value="2">Ciências Humanas</option>
@@ -214,7 +226,7 @@ class Pedidos extends React.Component {
                       {this.state.user.contractor === 'true' && (
                         <Col className="pr-1" md="3">
                         <FormGroup>
-                          <Input type="select" name="educationLevel" id="educationLevel" value={this.state.filter.educationLevel} onChange={this.atribuirValor}>
+                          <Input type="select" name="educationLevel" id="educationLevel" value={this.state.filter.educationLevel} onChange={this.atribuirValor} disabled = {this.state.disabled_}>
                             <option value="">Todos</option>
                             <option value="1">Ensino Médio</option>
                             <option value="2">Ensino Técnico</option>
@@ -238,7 +250,7 @@ class Pedidos extends React.Component {
                       <Col className="pr-1" md="3">
                         <FormGroup>
                           <Input name="number" id="number" value={this.state.filter.number} onChange={this.atribuirValor}
-                            type="number"
+                            type="number" onClick={this.desabilitar}
                           />
                         </FormGroup>
                       </Col>
@@ -247,7 +259,7 @@ class Pedidos extends React.Component {
                       </Col>
                       <Col className="pr-1" md="3">
                         <FormGroup>
-                          <Input type="select" name="status" id="status" value={this.state.filter.status} onChange={this.atribuirValor}>
+                          <Input type="select" name="status" id="status" value={this.state.filter.status} onChange={this.atribuirValor} disabled = {this.state.disabled_}>
                             <option value="">Todos</option>
                             <option value="1">Requisitado</option>
                             <option value="2">Em andamento</option>

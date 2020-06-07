@@ -195,7 +195,7 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="12">
                                                 <FormGroup>
                                                     <Input maxLength="50" name="name" value={this.state.user.name} onChange={this.atribuirValor}
-                                                        placeholder="Nome"
+                                                        placeholder="Nome*"
                                                         type="text"
                                                     />
                                                 </FormGroup>
@@ -205,7 +205,7 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <Input maxLength="50" name="nickname" value={this.state.user.nickname} onChange={this.atribuirValor}
-                                                        placeholder="Apelido"
+                                                        placeholder="Apelido*"
                                                         type="text"
                                                     />
                                                 </FormGroup>
@@ -213,7 +213,7 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <Input maxLength="11" name="phone" value={this.state.user.phone} onChange={this.atribuirValor}
-                                                        placeholder="Telefone"
+                                                        placeholder="Telefone*"
                                                         type="number"
                                                     />
                                                 </FormGroup>
@@ -223,7 +223,7 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="12">
                                                 <FormGroup>
                                                     <Input maxLength="50" name="email" value={this.state.user.email} onChange={this.atribuirValor}
-                                                        placeholder="E-mail"
+                                                        placeholder="E-mail*"
                                                         type="email"
                                                     />
                                                 </FormGroup>
@@ -233,7 +233,7 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <Input minLength="6" maxLength="10" name="password" value={this.state.user.password} onChange={this.atribuirValor}
-                                                        placeholder="Senha"
+                                                        placeholder="Senha*"
                                                         type="password"
                                                     />
                                                 </FormGroup>
@@ -241,7 +241,7 @@ class Cadastro extends React.Component {
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <Input minLength="6" maxLength="10" name="confirm_password" value={this.state.confirm_password} onChange={this.handleChange}
-                                                        placeholder="Confirmar senha"
+                                                        placeholder="Confirmar senha*"
                                                         type="password"
                                                     />
                                                     <p className="text-danger">{this.state.invalid_password}</p>

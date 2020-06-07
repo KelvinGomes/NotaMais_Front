@@ -89,11 +89,7 @@ class User extends React.Component {
               updated.password = Infinity;
             }       
           }
-       
 
-          
-          console.log('updated');
-          console.log(updated);
             await axios.put(`https://notamais-backend01.herokuapp.com/users/`, updated)
             .then(res => {
               window.alert("Atualização efetuada com sucesso!");
@@ -286,7 +282,7 @@ class User extends React.Component {
                         </Col>
                         <Col className="pr-1" md="4">
                           <FormGroup>
-                            <label>Confirmar Senha</label>
+                            <label>Confirmar Senha*</label>
                             <Input
                               minLength="6" maxLength="10"
                               name="confirmPassword" 
