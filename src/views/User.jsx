@@ -10,15 +10,14 @@ import {
   CardTitle,
   FormGroup,
   Form,
+  Label,
   Input,
   Row,
+
   Col
 } from "reactstrap";
 
-
-import { uniqueId } from 'lodash';
-import filesize from 'filesize';
-import Image from 'react-bootstrap/Image';
+import ImageUploader from 'react-images-upload';
 
 class User extends React.Component {
 
@@ -35,45 +34,81 @@ class User extends React.Component {
         oldPassword: ''
       },
       contractor: localStorage.getItem('contractor'),
+      pictures: null,
       invalid_password: ''
     };
     this.submeter = this.submeter.bind(this);
     this.atribuirValor = this.atribuirValor.bind(this);
     this.confirmarSenha = this.confirmarSenha.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    //this.handleChange = this.handleChange.bind(this);
     this.atribuirConfirmacao = this.atribuirConfirmacao.bind(this);
     this.tipoUsuario = this.tipoUsuario.bind(this);
+  
   }
 
-  
+ 
 
   atribuirValor(event) {
     let user = this.state.user;
-    user.password = '';
-    this.setState({user: user});
+    //user.password = '';
+    //this.setState({user: user});
     user[event.target.name] = event.target.value;
     this.setState({ user: user });
   }
 
 
+
   async submeter(event) {
     event.preventDefault();
     let user = this.state.user;
-    console.log('A: ', user.password, ' ', user.oldPassword);
+    var updated = {};
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    console.log(user.confirmPassword)
+
+
+          if (user.name){
+            updated.name = user.name;
+          }
+
+          if(user.nickname){
+            updated.nickname = user.nickname;
+          }
     
-    await axios.put(`https://notamais-backend01.herokuapp.com/users`, user.password, user.oldPassword, user.confirmPassword)
-        .then(res => {
-            window.alert("Atualização efetuada com sucesso!");
-            //window.location.href = "/general/login";
-        })
-        .catch((error) => {
-            window.alert("Erro ao atualizar perfil!");
-        });
-  }
+         if(user.phone){
+            updated.phone = user.phone;
+         }
+
+          if(user.oldPassword && user.password && user.confirmPassword){
+            updated.oldPassword = user.oldPassword;
+            updated.password = user.password;
+            updated.confirmPassword = user.confirmPassword;
+          }
+          else{
+            if(user.oldPassword || user.password || user.confirmPassword){
+              updated.password = Infinity;
+            }       
+          }
+
+            await axios.put(`https://notamais-backend01.herokuapp.com/users/`, updated)
+            .then(res => {
+              window.alert("Atualização efetuada com sucesso!");
+            })
+            .catch((error) => {
+                window.alert("Erro ao atualizar sua senha!");
+            });
+
+
+         
+    }
+
+
 
   confirmarSenha() {
+    let user = this.state.user;
     let invalid_password = this.state.invalid_password;
-    if (this.state.user.password != this.state.user.confirmPassword) {
+    
+    if (user.password != user.confirmPassword) {
         invalid_password = 'confirmação inválida';
     } else {
         invalid_password = '';
@@ -87,13 +122,13 @@ class User extends React.Component {
     this.setState({ state: state });
   }
 
-  handleChange(event) {
-    this.atribuirConfirmacao(event);
-    this.confirmarSenha();
-  }
-
+  //handleChange(event) {
+  //  this.atribuirConfirmacao(event);
+  //  this.confirmarSenha();
+  //}
 
   async componentDidMount() {
+
     let token = await localStorage.getItem('token');
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
     await axios.get(`https://notamais-backend01.herokuapp.com/users`)
@@ -105,18 +140,12 @@ class User extends React.Component {
         console.log(res.data.user);
       })
     
-   /* let url = `https://nota-mais.herokuapp.com/api/usuario/${id}`;
-    await fetch(url)
-      .then((r) => r.json())
-      .then((json) => {
-        this.setState({ usuario: json });
-        console.log(json);
-      })*/
   }
+
 
   tipoUsuario() {
     var texto = '';
-    if(this.state.user.contractor === 'true'){
+    if(this.state.contractor === 'true'){
       return texto = "No momento seu usuário é do tipo Aluno!";
     }else{
       return texto = "No momento seu usuário é do tipo Instrutor!";
@@ -139,14 +168,23 @@ class User extends React.Component {
                   <CardBody>
                     <div className="author">
                       <a href="#pablo" onClick={e => e.preventDefault()}>
-                        <img
-                          alt="..."
-                          className="avatar border-gray"
-                          src={require("assets/img/nota+/Profile.png")}
-                        />
+                       
+                        <div className="image-upload">
+                            <Label for="file-input">
+                                <img 
+                                  className="avatar border-gray" 
+                                  src={require("assets/img/nota+/Profile.png")}
+                                />
+                            </Label>
+                            <Input type="file" id="file-input"/>
+                          
+                        </div>
+                      
                         <h5 className="title">{this.state.user.name}</h5>
                       </a>
                       <p className="description">@ {this.state.user.nickname}</p>
+
+
                     </div>
                     <p style={{ height: "100%"}} className="description text-center">
                       {this.tipoUsuario()}
@@ -168,13 +206,14 @@ class User extends React.Component {
                     <CardTitle tag="h5">Editar Perfil</CardTitle>
                   </CardHeader>
                   <CardBody style={{ marginRight: "10px" }}>
-                    <Form >
+                    <Form onSubmit={this.submeter}>
                       <Row>
                         <Col className="pr-1" md="12">
                           <FormGroup>
                             <label>Nome</label>
                             <Input
                               name="name"
+                              onFocus={this.context}
                               value={this.state.user.name} 
                               onChange={this.atribuirValor}
                               placeholder={this.state.user.name}
@@ -243,12 +282,12 @@ class User extends React.Component {
                         </Col>
                         <Col className="pr-1" md="4">
                           <FormGroup>
-                            <label>Confirmar Senha</label>
+                            <label>Confirmar Senha*</label>
                             <Input
                               minLength="6" maxLength="10"
-                              name="confirm_password" 
+                              name="confirmPassword" 
                               value={this.state.user.confirmPassword} 
-                              onChange={this.handleChange}
+                              onChange={this.atribuirValor}
                               
                               type="password"
                             />
@@ -300,7 +339,7 @@ class User extends React.Component {
                         <div className="update ml-auto mr-auto">
                           <Button
                             className="btn_registre"
-                            onClick={this.submeter}
+                           
                             color="primary"
                             type="submit"
                           >

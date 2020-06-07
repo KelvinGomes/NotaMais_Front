@@ -345,3 +345,15 @@ body {
     margin-bottom: 35px;
     text-align: center;
 }
+
+
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload img
+{
+    width: 80px;
+    cursor: pointer;
+}
