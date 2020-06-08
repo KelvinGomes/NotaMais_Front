@@ -68,8 +68,6 @@ class User extends React.Component {
     let token = await localStorage.getItem('token');
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
 
-
-
     if (user.name){
       updated.name = user.name;
     }
@@ -317,7 +315,7 @@ class User extends React.Component {
                                 value={this.state.user.education_level} 
                                 onChange={this.atribuirValor}>
                                 <option value="1">Ensino médio</option>
-                                <option value="2">Técnico</option>
+                                <option value="2">Ensino Técnico</option>
                                 <option value="3">Ensino superior</option>
                               </Input>
                             </FormGroup>
