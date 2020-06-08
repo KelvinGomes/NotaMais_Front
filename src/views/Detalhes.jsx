@@ -32,6 +32,7 @@ class Detalhes extends React.Component {
     this.definirStatus = this.definirStatus.bind(this);
     this.definirGrau = this.definirGrau.bind(this);
     this.aceitarProposta = this.aceitarProposta.bind(this);
+    this.cancelarPedido = this.cancelarPedido.bind(this);
   }
 
   async componentDidMount() {
@@ -192,8 +193,20 @@ class Detalhes extends React.Component {
       .catch((error) => {
         window.alert("Erro ao aceitar propósta!");
       });
+  }
 
-    
+  async cancelarPedido() {
+    const { id } = this.props.match.params;
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    await axios.put(` https://notamais-backend01.herokuapp.com/orders/${id}`, { status: 4 })
+      .then(res => {
+        window.alert("Pedido cancelado com sucesso!");
+        window.location.reload();
+      })
+      .catch((error) => {
+        window.alert("Erro ao cancelar pedido!");
+      });
   }
 
   componentWillUnmount() {
@@ -236,21 +249,24 @@ class Detalhes extends React.Component {
                     <Upload onUpload={this.handleUpload} />
                     {!!uploadedFiles.length && <FileList files={uploadedFiles} onDelete={this.handleDelete} />}
                   </div>
+                  {this.state.order.status != 4 && this.state.order.status != 3 && (
+                    <p style={{ textAlign: "center", color: "red" }} type="submit" onClick={this.cancelarPedido}>Cancelar pedido</p>
+                  )}
                 </CardFooter>
               </Card>
             </Col>
           </Row>
-          {this.state.order.selected_offer_id == null && (
+          {this.state.order.selected_offer_id == null && this.state.order.status != 4 && (
             <CardTitle className="titulo">Propóstas ofertadas</CardTitle>
           )}
-          {this.state.order.selected_offer_id != null && (
+          {this.state.order.selected_offer_id != null && this.state.order.status != 4 && (
             <CardTitle className="titulo">Propósta aceita</CardTitle>
           )}
-          {this.state.offers == '' && (
+          {this.state.offers == '' && this.state.order.status != 4 && (
             <p style={{ textAlign: "center", marginTop: "30px" }}>Você ainda não recebeu nenhuma propósta!</p>
           )}
 
-          {this.state.order.selected_offer_id != null && this.state.offers.map((offer) => {
+          {this.state.order.selected_offer_id != null && this.state.order.status != 4 && this.state.offers.map((offer) => {
             return (
               <>
                 {offer.id === this.state.order.selected_offer_id && (
@@ -280,7 +296,7 @@ class Detalhes extends React.Component {
             )
           })}
 
-          {this.state.order.selected_offer_id == null && this.state.offers.map((offer) => {
+          {this.state.order.selected_offer_id == null && this.state.order.status != 4 && this.state.offers.map((offer) => {
             return (
               <>
                 <Row key={offer.id}>

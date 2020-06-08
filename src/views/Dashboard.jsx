@@ -26,7 +26,8 @@ const dashboardEmailStatisticsChart = {
           pointHoverRadius: 0,
           backgroundColor: ["#e3e3e3", "#4acccd", "#fcc468", "#ef8157"],
           borderWidth: 0,
-          data: [2, 480, 530, 120]
+          data: [localStorage.getItem('linguagens'), localStorage.getItem('exatas'),
+          localStorage.getItem('biologicas'),localStorage.getItem('humanas')]
         }
       ]
     };
@@ -81,26 +82,46 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filter: {
-        orders: []
-      },
+      orders: []
     };
   }
 
   async componentDidMount() {
+    let exatas = 0;
+    let humanas = 0;
+    let biologicas = 0;
+    let linguagens = 0;
+
     let token = await localStorage.getItem('token');
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
-    await axios.get(`https://notamais-backend01.herokuapp.com/users`)
+    await axios.get(`https://notamais-backend01.herokuapp.com/orders`)
       .then(res => {
-        let user = res.data.user;
-        user.contractor = localStorage.getItem('contractor');
-        this.setState({ user: user });
-
-        let filter = this.state.filter;
-        filter.studyArea = user.area_interest;
-        filter.educationLevel = user.education_level;
-        this.setState({ filter: filter });
+        let orders = res.data;
+        this.setState({ orders: orders });
+        console.log(orders);
       })
+
+      for (let order in this.state.orders){
+        switch(this.state.orders[order].study_area){
+          case 1: 
+            exatas++;
+            break;
+          case 2: 
+            humanas++;
+            break;
+          case 3: 
+            biologicas++;
+            break;
+          case 4: 
+            linguagens++;
+            break;
+        }
+      }
+
+      localStorage.setItem('exatas', exatas);
+      localStorage.setItem('humanas', humanas);
+      localStorage.setItem('biologicas', biologicas);
+      localStorage.setItem('linguagens', linguagens);
   }
 
   render() {
@@ -219,7 +240,6 @@ class Dashboard extends React.Component {
               <Card>
                 <CardHeader>
                   <CardTitle tag="h5">Pedidos por área</CardTitle>
-                  <p className="card-category">Last Campaign Performance</p>
                 </CardHeader>
                 <CardBody>
                   <Pie
@@ -231,8 +251,9 @@ class Dashboard extends React.Component {
                   <div className="legend">
                     <i className="fa fa-circle text-primary" /> Exatas{" "}
                     <i className="fa fa-circle text-warning" /> Biológicas{" "}
+                    <br/>
                     <i className="fa fa-circle text-danger" /> Humanas{" "}
-                    <i className="fa fa-circle text-gray" /> Códigos{" "}
+                    <i className="fa fa-circle text-gray" /> Linguagens{" "}
                   </div>
                 </CardFooter>
               </Card>

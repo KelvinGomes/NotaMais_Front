@@ -42,6 +42,7 @@ class Detalhes_Prestador extends React.Component {
     this.definirGrau = this.definirGrau.bind(this);
     this.ofertarProposta = this.ofertarProposta.bind(this);
     this.atribuirValor = this.atribuirValor.bind(this);
+    this.concluirPedido = this.concluirPedido.bind(this);
   }
 
   async componentDidMount() {
@@ -156,6 +157,20 @@ class Detalhes_Prestador extends React.Component {
     }
   }
 
+  async concluirPedido(){
+    const { id } = this.props.match.params;
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    await axios.put(` https://notamais-backend01.herokuapp.com/orders/${id}`, {status: 3})
+      .then(res => {
+        window.alert("Pedido concluido com sucesso!");
+        window.location.reload();
+      })
+      .catch((error) => {
+        window.alert("Erro ao concluir pedido!");
+      });
+  }
+
   componentWillUnmount() {
     this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
   }
@@ -202,7 +217,7 @@ class Detalhes_Prestador extends React.Component {
           </Row>
           <Row>
             <Col className="pr-1" md="12">
-              {this.state.offers == '' && (
+              {this.state.offers == '' && this.state.order.status != 4 && (
                 <>
                   <CardTitle className="titulo">Ofertar propósta</CardTitle>
                   <Card>
@@ -240,7 +255,7 @@ class Detalhes_Prestador extends React.Component {
                   </Card>
                 </>
               )}
-              {this.state.offers != '' && (
+              {this.state.offers != '' && this.state.order.status != 4 && (
                 <>
                   <CardTitle className="titulo">Propósta ofertada</CardTitle>
                   <Card>
@@ -252,8 +267,19 @@ class Detalhes_Prestador extends React.Component {
                     </CardBody>
                     <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", borderBottomRightRadius: "15px", borderBottomLeftRadius: "15px" }}>
                       <Row style={{ textAlign: "center" }}>
-                        <Col className="pr-1" md="6"><p style={{ fontWeight: "bold" }}>Data</p><p>{this.state.offers.createdAt}</p></Col>
-                        <Col className="pr-1" md="6"><p style={{ fontWeight: "bold" }}>Valor (R$)</p><p>{this.state.offers.value}</p></Col>
+                        <Col className="pr-1" md="4"><p style={{ fontWeight: "bold" }}>Data</p><p>{this.state.offers.createdAt}</p></Col>
+                        <Col className="pr-1" md="4"><p style={{ fontWeight: "bold" }}>Valor (R$)</p><p>{this.state.offers.value}</p></Col>
+                        {this.state.order.status == 2 && (
+                          <Col className="pr-1" md="4">
+                            <img src={require("assets/img/nota+/img-aceitar.png")} alt="aceitar" type="submit" onClick = {this.concluirPedido} />
+                            <p>Concluir</p>
+                          </Col>
+                        )}
+                        {this.state.order.status == 3 && (
+                          <Col className="pr-1" md="4">
+                            <h6 style={{marginTop: "30px"}}>Esta oferta já foi cumprida!</h6>
+                          </Col>
+                        )} 
                       </Row>
                     </CardFooter>
                   </Card>
