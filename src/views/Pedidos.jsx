@@ -139,19 +139,26 @@ class Pedidos extends React.Component {
     if(flag === true){
       await axios.get(`https://notamais-backend01.herokuapp.com/orders/${dados}`)
       .then(res => {
-        let orders = res.data.order;
-        console.log(orders);
-        this.setState({ orders: orders })
-        console.log(orders);
+        let order = res.data.order;
+        
+
+
+
+
+        this.setState({
+           orders: {
+             
+            } 
+        })
+        console.log(this.state.order);
       })
 
     }else{
         await axios.get(url)
           .then(res => {
             let orders = res.data;
-            Array.from(orders);
-            console.log(orders);
             this.setState({ orders: orders })
+            console.log(this.state.orders);
           })
         }
     
