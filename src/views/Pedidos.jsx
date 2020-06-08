@@ -6,6 +6,7 @@ import {
 }
   from "reactstrap";
 import { Link } from 'react-router-dom';
+import Dashboard from "layouts/Admin";
 
 
 class Pedidos extends React.Component {
@@ -16,7 +17,7 @@ class Pedidos extends React.Component {
         educationLevel: '',
         studyArea: '',
         dueDate: '',
-        number: '',
+        id: '',
         status: ''
       },
       orders: [],
@@ -36,9 +37,6 @@ class Pedidos extends React.Component {
 
 
   desabilitar(event){
-    let filter = this.state.filter;
-  
-    console.log(filter[event.target.value])
     this.state.disabled_ = "true";
   }
 
@@ -60,17 +58,18 @@ class Pedidos extends React.Component {
 
   atribuirValor(event) {
     let filter = this.state.filter;
+    
     filter[event.target.name] = event.target.value;
     this.setState({ filter: filter });
-
 
   }
 
   limparFiltro() {
     let filter = this.state.filter;
     filter.dueDate = '';
-    filter.number = '';
+    filter.id = '';
     filter.status = '';
+    this.state.disabled_ = '';
 
     if(this.state.user.contractor === 'true'){
       filter.educationLevel = '';
@@ -79,14 +78,17 @@ class Pedidos extends React.Component {
       filter.educationLevel = this.state.user.education_level;
       filter.studyArea = this.state.user.area_interest;
     }
+    
 
     this.setState({ filter: filter });
   }
+
 
   async buscar(event) {
     event.preventDefault();
 
     let filter = this.state.filter;
+    let flag = false;
 
     let token = await localStorage.getItem('token');
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
@@ -95,37 +97,63 @@ class Pedidos extends React.Component {
 
     let url = "https://notamais-backend01.herokuapp.com/orders?";
 
-    if (!filter.educationLevel == '') {
-      dados.push("educationLevel=" + filter.educationLevel);
-    }
+   // https://notamais-backend01.herokuapp.com/orders/26
 
-    if (!filter.studyArea == '') {
-      dados.push("studyArea=" + filter.studyArea);
-    }
+    if(this.state.disabled_ == 'true'){
 
-    if (!filter.dueDate == '') {
-      dados.push("dueDate=" + filter.dueDate);
-    }
-
-    if (!filter.status == '') {
-      dados.push("status=" + filter.status);
-    }
-
-    for (let i = 0; i < dados.length; i++) {
-
-      if (i == 0) {
-        url += dados[i];
-      } else {
-        url += "&" + dados[i];
+      if (!filter.id == '') {
+        flag = true;
+        dados.push(filter.id);
+        console.log(dados);
       }
-    }
-    console.log(url);
+    }else{
+      if (!filter.educationLevel == '') {
+        dados.push("educationLevel=" + filter.educationLevel);
+        console.log(dados);
+      }
+  
+  
+      if (!filter.studyArea == '') {
+        dados.push("studyArea=" + filter.studyArea);
+      }
+  
+      if (!filter.dueDate == '') {
+        dados.push("dueDate=" + filter.dueDate);
+      }
+  
+      if (!filter.status == '') {
+        dados.push("status=" + filter.status);
+      }
+      for (let i = 0; i < dados.length; i++) {
+  
+        if (i == 0) {
+          url += dados[i];
+        } else {
+          url += "&" + dados[i];
+        }
+      }
 
-    await axios.get(url)
+    }
+
+
+    if(flag === true){
+      await axios.get(`https://notamais-backend01.herokuapp.com/orders/${dados}`)
       .then(res => {
-        let orders = res.data;
+        let orders = res.data.order;
+        console.log(orders);
         this.setState({ orders: orders })
       })
+
+    }else{
+        await axios.get(url)
+          .then(res => {
+            let orders = res.data;
+            Array.from(orders);
+            console.log(orders);
+            this.setState({ orders: orders })
+          })
+        }
+    
   }
 
   definirArea(valor) {
@@ -249,7 +277,7 @@ class Pedidos extends React.Component {
                       </Col>
                       <Col className="pr-1" md="3">
                         <FormGroup>
-                          <Input name="number" id="number" value={this.state.filter.number} onChange={this.atribuirValor}
+                          <Input name="id" id="number" value={this.state.filter.id} onChange={this.atribuirValor}
                             type="number" onClick={this.desabilitar}
                           />
                         </FormGroup>

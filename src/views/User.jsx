@@ -31,7 +31,10 @@ class User extends React.Component {
         phone: '',
         password: '',
         confirmPassword: '',
-        oldPassword: ''
+        oldPassword: '', 
+        area_interest: '', 
+        education_level: ''
+        
       },
       contractor: localStorage.getItem('contractor'),
       pictures: null,
@@ -64,42 +67,48 @@ class User extends React.Component {
     var updated = {};
     let token = await localStorage.getItem('token');
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
-    console.log(user.confirmPassword)
 
 
-          if (user.name){
-            updated.name = user.name;
-          }
 
-          if(user.nickname){
-            updated.nickname = user.nickname;
-          }
+    if (user.name){
+      updated.name = user.name;
+    }
+
+    if(user.nickname){
+      updated.nickname = user.nickname;
+    }
     
-         if(user.phone){
-            updated.phone = user.phone;
-         }
+    if(user.phone){
+      updated.phone = user.phone;
+    }
 
-          if(user.oldPassword && user.password && user.confirmPassword){
+    if(user.area_interest){
+      updated.area_interest = user.area_interest;
+    }
+
+    if(user.education_level){
+      updated.education_level = user.education_level;
+    }
+
+    if(user.oldPassword && user.password && user.confirmPassword){
             updated.oldPassword = user.oldPassword;
             updated.password = user.password;
             updated.confirmPassword = user.confirmPassword;
-          }
-          else{
-            if(user.oldPassword || user.password || user.confirmPassword){
-              updated.password = Infinity;
-            }       
-          }
+    }
+    else{
+        if(user.oldPassword || user.password || user.confirmPassword){
+          updated.password = Infinity;
+        }       
+    }
 
-            await axios.put(`https://notamais-backend01.herokuapp.com/users/`, updated)
-            .then(res => {
-              window.alert("Atualização efetuada com sucesso!");
-            })
-            .catch((error) => {
-                window.alert("Erro ao atualizar sua senha!");
-            });
-
-
-         
+    await axios.put(`https://notamais-backend01.herokuapp.com/users/`, updated)
+      .then(res => {
+         window.alert("Atualização efetuada com sucesso!");
+      })
+      .catch((error) => {
+        window.alert("Erro ao atualizar sua senha!");
+      });
+  
     }
 
 
@@ -135,7 +144,7 @@ class User extends React.Component {
       .then(res => {
         let user = res.data.user;
         user.contractor = localStorage.getItem('contractor');
-        console.log(user.contractor);
+        
         this.setState({ user: user});
         console.log(res.data.user);
       })
