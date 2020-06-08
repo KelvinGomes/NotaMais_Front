@@ -140,17 +140,10 @@ class Pedidos extends React.Component {
       await axios.get(`https://notamais-backend01.herokuapp.com/orders/${dados}`)
       .then(res => {
         let order = res.data.order;
-        
-
-
-
 
         this.setState({
-           orders: {
-             
-            } 
+           orders: [order]
         })
-        console.log(this.state.order);
       })
 
     }else{
