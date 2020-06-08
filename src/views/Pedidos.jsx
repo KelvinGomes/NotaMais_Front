@@ -142,6 +142,7 @@ class Pedidos extends React.Component {
         let orders = res.data.order;
         console.log(orders);
         this.setState({ orders: orders })
+        console.log(orders);
       })
 
     }else{
@@ -180,7 +181,7 @@ class Pedidos extends React.Component {
       case 1:
         return status = 'Requisitado';
       case 2:
-        return status = 'Em andamento';
+        return status = 'Processando';
       case 3:
         return status = 'Concluído';
       case 4:
@@ -290,7 +291,7 @@ class Pedidos extends React.Component {
                           <Input type="select" name="status" id="status" value={this.state.filter.status} onChange={this.atribuirValor} disabled = {this.state.disabled_}>
                             <option value="">Todos</option>
                             <option value="1">Requisitado</option>
-                            <option value="2">Em andamento</option>
+                            <option value="2">Processando</option>
                             <option value="3">Concluído</option>
                             <option value="4">Cancelado</option>
                           </Input>
@@ -346,7 +347,7 @@ class Pedidos extends React.Component {
                         <Row>
                           <Col className="pr-1" md="3">
                             <p style={{ fontWeight: "bold" }}>Requisitante: </p>
-                            <p>{order.user_id}</p>
+                            <p>{order.name_user}</p>
                           </Col>
                           <Col className="pr-1" md="2">
                             <p style={{ fontWeight: "bold" }}>Área : </p>

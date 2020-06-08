@@ -2,6 +2,7 @@
 import React from "react";
 // react plugin used to create charts
 import { Line, Pie } from "react-chartjs-2";
+import axios from 'axios';
 // reactstrap components
 import {
   Card,
@@ -13,13 +14,95 @@ import {
   Col
 } from "reactstrap";
 // core components
-import {
-  dashboard24HoursPerformanceChart,
-  dashboardEmailStatisticsChart,
-  dashboardNASDAQChart
-} from "variables/charts.jsx";
+
+const dashboardEmailStatisticsChart = {
+  data: canvas => {
+    return {
+      labels: [1, 2, 3],
+      datasets: [
+        {
+          label: "Emails",
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          backgroundColor: ["#e3e3e3", "#4acccd", "#fcc468", "#ef8157"],
+          borderWidth: 0,
+          data: [2, 480, 530, 120]
+        }
+      ]
+    };
+  },
+  options: {
+    legend: {
+      display: false
+    },
+
+    pieceLabel: {
+      render: "percentage",
+      fontColor: ["white"],
+      precision: 2
+    },
+
+    tooltips: {
+      enabled: false
+    },
+
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            display: false
+          },
+          gridLines: {
+            drawBorder: false,
+            zeroLineColor: "transparent",
+            color: "rgba(255,255,255,0.05)"
+          }
+        }
+      ],
+
+      xAxes: [
+        {
+          barPercentage: 1.6,
+          gridLines: {
+            drawBorder: false,
+            color: "rgba(255,255,255,0.1)",
+            zeroLineColor: "transparent"
+          },
+          ticks: {
+            display: false
+          }
+        }
+      ]
+    }
+  }
+};
 
 class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filter: {
+        orders: []
+      },
+    };
+  }
+
+  async componentDidMount() {
+    let token = await localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    await axios.get(`https://notamais-backend01.herokuapp.com/users`)
+      .then(res => {
+        let user = res.data.user;
+        user.contractor = localStorage.getItem('contractor');
+        this.setState({ user: user });
+
+        let filter = this.state.filter;
+        filter.studyArea = user.area_interest;
+        filter.educationLevel = user.education_level;
+        this.setState({ filter: filter });
+      })
+  }
+
   render() {
     return (
       <>
@@ -130,35 +213,12 @@ class Dashboard extends React.Component {
               </Card>
             </Col>
           </Row>
-          <Row>
-            <Col md="12">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h5">Users Behavior</CardTitle>
-                  <p className="card-category">24 Hours performance</p>
-                </CardHeader>
-                <CardBody>
-                  <Line
-                    data={dashboard24HoursPerformanceChart.data}
-                    options={dashboard24HoursPerformanceChart.options}
-                    width={400}
-                    height={100}
-                  />
-                </CardBody>
-                <CardFooter>
-                  <hr />
-                  <div className="stats">
-                    <i className="fa fa-history" /> Updated 3 minutes ago
-                  </div>
-                </CardFooter>
-              </Card>
-            </Col>
-          </Row>
+          
           <Row>
             <Col md="4">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h5">Email Statistics</CardTitle>
+                  <CardTitle tag="h5">Pedidos por área</CardTitle>
                   <p className="card-category">Last Campaign Performance</p>
                 </CardHeader>
                 <CardBody>
@@ -169,44 +229,15 @@ class Dashboard extends React.Component {
                 </CardBody>
                 <CardFooter>
                   <div className="legend">
-                    <i className="fa fa-circle text-primary" /> Opened{" "}
-                    <i className="fa fa-circle text-warning" /> Read{" "}
-                    <i className="fa fa-circle text-danger" /> Deleted{" "}
-                    <i className="fa fa-circle text-gray" /> Unopened
-                  </div>
-                  <hr />
-                  <div className="stats">
-                    <i className="fa fa-calendar" /> Number of emails sent
+                    <i className="fa fa-circle text-primary" /> Exatas{" "}
+                    <i className="fa fa-circle text-warning" /> Biológicas{" "}
+                    <i className="fa fa-circle text-danger" /> Humanas{" "}
+                    <i className="fa fa-circle text-gray" /> Códigos{" "}
                   </div>
                 </CardFooter>
               </Card>
             </Col>
-            <Col md="8">
-              <Card className="card-chart">
-                <CardHeader>
-                  <CardTitle tag="h5">NASDAQ: AAPL</CardTitle>
-                  <p className="card-category">Line Chart with Points</p>
-                </CardHeader>
-                <CardBody>
-                  <Line
-                    data={dashboardNASDAQChart.data}
-                    options={dashboardNASDAQChart.options}
-                    width={400}
-                    height={100}
-                  />
-                </CardBody>
-                <CardFooter>
-                  <div className="chart-legend">
-                    <i className="fa fa-circle text-info" /> Tesla Model S{" "}
-                    <i className="fa fa-circle text-warning" /> BMW 5 Series
-                  </div>
-                  <hr />
-                  <div className="card-stats">
-                    <i className="fa fa-check" /> Data information certified
-                  </div>
-                </CardFooter>
-              </Card>
-            </Col>
+            
           </Row>
         </div>
       </>

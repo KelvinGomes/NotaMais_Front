@@ -139,7 +139,7 @@ body {
     border-top-right-radius: 10px;
 }
 
-.Em andamento {
+.Processando {
     background-color: rgb(255, 241, 116);
     height: 100%;
     align-items: center;
