@@ -82,7 +82,13 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      orders: []
+      orders: [],
+      status: {
+        requisitado: 0,
+        processando: 0,
+        concluido: 0,
+        cancelado: 0,
+      }
     };
   }
 
@@ -91,6 +97,10 @@ class Dashboard extends React.Component {
     let humanas = 0;
     let biologicas = 0;
     let linguagens = 0;
+    let requisitado = 0;
+    let processando = 0;
+    let concluido = 0;
+    let cancelado = 0;
 
     let token = await localStorage.getItem('token');
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
@@ -118,6 +128,32 @@ class Dashboard extends React.Component {
         }
       }
 
+      for (let order in this.state.orders){
+        switch(this.state.orders[order].status){
+          case 1: 
+            requisitado++;
+            break;
+          case 2: 
+            processando++;
+            break;
+          case 3: 
+            concluido++;
+            break;
+          case 4: 
+            cancelado++;
+            break;
+        }
+      }
+
+      this.setState({
+        status: {
+          requisitado: requisitado,
+          processando: processando,
+          concluido: concluido,
+          cancelado: cancelado
+        }
+      })
+
       localStorage.setItem('exatas', exatas);
       localStorage.setItem('humanas', humanas);
       localStorage.setItem('biologicas', biologicas);
@@ -129,19 +165,22 @@ class Dashboard extends React.Component {
       <>
         <div className="content">
           <Row>
+            <CardTitle className="titulo" style={{margin: "20px"}}>Pedidos por status</CardTitle>
+          </Row>
+          <Row>
             <Col lg="3" md="6" sm="6">
               <Card className="card-stats">
                 <CardBody>
                   <Row>
                     <Col md="4" xs="5">
                       <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-globe text-warning" />
+                        <i className="nc-icon nc-single-copy-04 text-primary" />
                       </div>
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Capacity</p>
-                        <CardTitle tag="p">150GB</CardTitle>
+                        <p className="card-category">Requisitado</p>
+                        <CardTitle tag="p">{this.state.status.requisitado}</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -149,8 +188,8 @@ class Dashboard extends React.Component {
                 </CardBody>
                 <CardFooter>
                   <hr />
-                  <div className="stats">
-                    <i className="fas fa-sync-alt" /> Update Now
+                  <div className="stats" style={{textAlign: "right"}}>
+                    pedidos
                   </div>
                 </CardFooter>
               </Card>
@@ -161,13 +200,13 @@ class Dashboard extends React.Component {
                   <Row>
                     <Col md="4" xs="5">
                       <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-money-coins text-success" />
+                        <i className="nc-icon nc-refresh-69 text-warning" />
                       </div>
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Revenue</p>
-                        <CardTitle tag="p">$ 1,345</CardTitle>
+                        <p className="card-category">Processando</p>
+                        <CardTitle tag="p">{this.state.status.processando}</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -175,8 +214,8 @@ class Dashboard extends React.Component {
                 </CardBody>
                 <CardFooter>
                   <hr />
-                  <div className="stats">
-                    <i className="far fa-calendar" /> Last day
+                  <div className="stats" style={{textAlign: "right"}}>
+                    pedidos
                   </div>
                 </CardFooter>
               </Card>
@@ -187,13 +226,13 @@ class Dashboard extends React.Component {
                   <Row>
                     <Col md="4" xs="5">
                       <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-vector text-danger" />
+                        <i className="nc-icon nc-simple-remove text-danger" />
                       </div>
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Errors</p>
-                        <CardTitle tag="p">23</CardTitle>
+                        <p className="card-category">Cancelado</p>
+                        <CardTitle tag="p">{this.state.status.cancelado}</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -201,8 +240,8 @@ class Dashboard extends React.Component {
                 </CardBody>
                 <CardFooter>
                   <hr />
-                  <div className="stats">
-                    <i className="far fa-clock" /> In the last hour
+                  <div className="stats" style={{textAlign: "right"}}>
+                    pedidos
                   </div>
                 </CardFooter>
               </Card>
@@ -213,13 +252,13 @@ class Dashboard extends React.Component {
                   <Row>
                     <Col md="4" xs="5">
                       <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-favourite-28 text-primary" />
+                        <i className="nc-icon nc-check-2 text-success" />
                       </div>
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Followers</p>
-                        <CardTitle tag="p">+45K</CardTitle>
+                        <p className="card-category">Concluído</p>
+                        <CardTitle tag="p">{this.state.status.concluido}</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -227,14 +266,16 @@ class Dashboard extends React.Component {
                 </CardBody>
                 <CardFooter>
                   <hr />
-                  <div className="stats">
-                    <i className="fas fa-sync-alt" /> Update now
+                  <div className="stats" style={{textAlign: "right"}}>
+                    pedidos
                   </div>
                 </CardFooter>
               </Card>
             </Col>
           </Row>
-          
+          <Row>
+            <CardTitle className="titulo" style={{margin: "20px"}}>Gráficos</CardTitle>
+          </Row>
           <Row>
             <Col md="4">
               <Card>
