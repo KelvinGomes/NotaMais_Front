@@ -12,9 +12,10 @@ import Login from "views/Login.jsx";
 import Cadastro from "views/Cadastro.jsx";
 import Quiz_Descricao from "views/Quiz_Descricao";
 import Not_Found from "views/Not_Found";
+import Chat from 'views/Chat';
 
 
-var routes = [
+const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -100,6 +101,12 @@ var routes = [
     path: "/cadastro",
     component: Cadastro,
     layout: "/general"
+  },
+  {
+    pro: true,
+    path: "/chat",
+    component: Chat,
+    layout: "/admin"
   }
 ];
 export default routes;

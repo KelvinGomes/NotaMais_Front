@@ -1,5 +1,6 @@
 import React from "react";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 // reactstrap components
 import {
   Card,
@@ -12,13 +13,15 @@ import {
   Col,
   Form,
   Input,
-  FormGroup
+  FormGroup,
+  Button
 } from "reactstrap";
 
 import Upload from "../components/Upload";
 import FileList from "../components/FileList";
 import { uniqueId } from 'lodash';
 import filesize from 'filesize';
+import MessageButton from "components/MessageButton";
 
 class Detalhes_Prestador extends React.Component {
   constructor(props) {
@@ -75,7 +78,7 @@ class Detalhes_Prestador extends React.Component {
     await axios.get(`https://notamais-backend01.herokuapp.com/offers/${id}`)
       .then(res => {
         console.log(res.data);
-        if(res.data.offers[0] != null){
+        if (res.data.offers[0] != null) {
           let offers = res.data.offers[0];
           this.setState({ offers: offers });
           console.log(this.state.offers);
@@ -157,11 +160,11 @@ class Detalhes_Prestador extends React.Component {
     }
   }
 
-  async concluirPedido(){
+  async concluirPedido() {
     const { id } = this.props.match.params;
     let token = await localStorage.getItem('token');
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
-    await axios.put(` https://notamais-backend01.herokuapp.com/orders/${id}`, {status: 3})
+    await axios.put(` https://notamais-backend01.herokuapp.com/orders/${id}`, { status: 3 })
       .then(res => {
         window.alert("Pedido concluido com sucesso!");
         window.location.reload();
@@ -181,7 +184,7 @@ class Detalhes_Prestador extends React.Component {
       <>
         <div className="content">
           <Row>
-            <Col className="pr-1" md="12">
+            <Col classNam e="pr-1" md="12">
               <CardTitle className="titulo">{this.state.order.subject}</CardTitle>
               <Card>
                 <CardHeader style={{ backgroundColor: "rgb(58, 132, 177)", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
@@ -260,10 +263,16 @@ class Detalhes_Prestador extends React.Component {
                   <CardTitle className="titulo">Propósta ofertada</CardTitle>
                   <Card>
                     <CardBody>
-                      <Col style={{ textAlign: "center" }}>
-                        <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
-                        <p>{this.state.offers.description}</p>
-                      </Col>
+                      <Row>
+                        <Col></Col>
+                        <Col xs="10" style={{ textAlign: "center" }}>
+                          <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
+                          <p>{this.state.offers.description}</p>
+                        </Col>
+                        <Col>
+                          <Link to="/admin/chat"><MessageButton /></Link>
+                        </Col>
+                      </Row>
                     </CardBody>
                     <CardFooter style={{ backgroundColor: "rgb(58, 132, 177)", borderBottomRightRadius: "15px", borderBottomLeftRadius: "15px" }}>
                       <Row style={{ textAlign: "center" }}>
@@ -271,15 +280,15 @@ class Detalhes_Prestador extends React.Component {
                         <Col className="pr-1" md="4"><p style={{ fontWeight: "bold" }}>Valor (R$)</p><p>{this.state.offers.value}</p></Col>
                         {this.state.order.status == 2 && (
                           <Col className="pr-1" md="4">
-                            <img src={require("assets/img/nota+/img-aceitar.png")} alt="aceitar" type="submit" onClick = {this.concluirPedido} />
+                            <img src={require("assets/img/nota+/img-aceitar.png")} alt="aceitar" type="submit" onClick={this.concluirPedido} />
                             <p>Concluir</p>
                           </Col>
                         )}
                         {this.state.order.status == 3 && (
                           <Col className="pr-1" md="4">
-                            <h6 style={{marginTop: "30px"}}>Esta oferta já foi cumprida!</h6>
+                            <h6 style={{ marginTop: "30px" }}>Esta oferta já foi cumprida!</h6>
                           </Col>
-                        )} 
+                        )}
                       </Row>
                     </CardFooter>
                   </Card>
