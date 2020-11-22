@@ -17,6 +17,8 @@ import {
   Button
 } from "reactstrap";
 
+import { Chat, addResponseMessage, addLinkSnippet, addUserMessage } from 'react-chat-popup';
+
 import Upload from "../components/Upload";
 import FileList from "../components/FileList";
 import { uniqueId } from 'lodash';
@@ -54,6 +56,7 @@ class Detalhes_Prestador extends React.Component {
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
     await axios.get(`https://notamais-backend01.herokuapp.com/orders/${id}`)
       .then(res => {
+        console.log(res);
         let order = res.data.order;
         let files = res.data.orderFiles;
         this.setState({ order: order });
@@ -182,6 +185,12 @@ class Detalhes_Prestador extends React.Component {
     const { uploadedFiles } = this.state;
     return (
       <>
+        <Chat
+          // handleNewUserMessage={this.handleNewUserMessage}
+          // profileAvatar={logo}
+          title="Mensagens - Kelvin Gomes"
+        />
+
         <div className="content">
           <Row>
             <Col classNam e="pr-1" md="12">

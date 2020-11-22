@@ -7,6 +7,7 @@
     "axios": "^0.19.2",
     "bootstrap": "4.3.1",
     "chart.js": "2.8.0",
+    "dotenv": "^8.2.0",
     "file": "^0.2.2",
     "filesize": "^6.1.0",
     "history": "4.9.0",
@@ -16,6 +17,8 @@
     "react": "16.8.6",
     "react-bootstrap": "^1.0.1",
     "react-chartjs-2": "2.7.6",
+    "react-chat-popup": "^1.1.2",
+    "react-chat-window": "^1.2.1",
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "16.8.6",
     "react-dropzone": "^11.0.1",
@@ -27,8 +30,10 @@
     "react-router": "5.0.0",
     "react-router-dom": "5.0.0",
     "react-scripts": "3.0.1",
+    "react-scroll-to-bottom": "^4.0.0",
     "reactstrap": "8.0.0",
     "size": "^1.0.0",
+    "socket.io-client": "^3.0.3",
     "styled-components": "^5.1.0"
   },
   "scripts": {
