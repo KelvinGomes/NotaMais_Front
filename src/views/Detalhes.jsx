@@ -17,6 +17,8 @@ import Upload from "../components/Upload";
 import FileList from "../components/FileList";
 import { uniqueId } from 'lodash';
 import filesize from 'filesize';
+import { Link } from "react-router-dom";
+import MessageButton from "components/MessageButton";
 
 class Detalhes extends React.Component {
   constructor(props) {
@@ -283,10 +285,16 @@ class Detalhes extends React.Component {
                           </Row>
                         </CardHeader>
                         <CardBody>
-                          <Col style={{ textAlign: "center" }}>
-                            <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
-                            <p>{offer.description}</p>
-                          </Col>
+                          <Row>
+                            <Col></Col>
+                            <Col md="10" style={{ textAlign: "center" }}>
+                              <p style={{ fontWeight: "bold", color: "rgb(58, 132, 177)" }}>Descrição</p>
+                              <p>{offer.description}</p>
+                            </Col>
+                            <Col>
+                              <Link to="/admin/chat"><MessageButton /></Link>
+                            </Col>
+                          </Row>
                         </CardBody>
                       </Card>
                     </Col>

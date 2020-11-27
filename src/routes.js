@@ -104,7 +104,7 @@ const routes = [
   },
   {
     pro: true,
-    path: "/chat",
+    path: "/chat/:orderId",
     component: Chat,
     layout: "/admin"
   }

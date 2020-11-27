@@ -17,8 +17,6 @@ import {
   Button
 } from "reactstrap";
 
-import { Chat, addResponseMessage, addLinkSnippet, addUserMessage } from 'react-chat-popup';
-
 import Upload from "../components/Upload";
 import FileList from "../components/FileList";
 import { uniqueId } from 'lodash';
@@ -152,8 +150,9 @@ class Detalhes_Prestador extends React.Component {
     if (offer.value > -1 && offer.description != null) {
       await axios.post(`https://notamais-backend01.herokuapp.com/offers`, offer)
         .then(res => {
+          console.log(res);
           window.alert("Propósta ofertada com sucesso!");
-          window.location.reload();
+          // window.location.reload();
         })
         .catch((error) => {
           window.alert("Erro ao ofertar propósta!");
@@ -169,8 +168,9 @@ class Detalhes_Prestador extends React.Component {
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
     await axios.put(` https://notamais-backend01.herokuapp.com/orders/${id}`, { status: 3 })
       .then(res => {
+        console.log(res);
         window.alert("Pedido concluido com sucesso!");
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((error) => {
         window.alert("Erro ao concluir pedido!");
@@ -185,12 +185,6 @@ class Detalhes_Prestador extends React.Component {
     const { uploadedFiles } = this.state;
     return (
       <>
-        <Chat
-          // handleNewUserMessage={this.handleNewUserMessage}
-          // profileAvatar={logo}
-          title="Mensagens - Kelvin Gomes"
-        />
-
         <div className="content">
           <Row>
             <Col classNam e="pr-1" md="12">
@@ -279,7 +273,7 @@ class Detalhes_Prestador extends React.Component {
                           <p>{this.state.offers.description}</p>
                         </Col>
                         <Col>
-                          <Link to="/admin/chat"><MessageButton /></Link>
+                          <Link to="/admin/chat/52"><MessageButton /></Link>
                         </Col>
                       </Row>
                     </CardBody>

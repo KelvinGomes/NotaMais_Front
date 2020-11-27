@@ -40,12 +40,15 @@ class Login extends React.Component {
         let res;
         let user = this.state.user;
         await axios.post(`https://notamais-backend01.herokuapp.com/sessions`, user)
-            .then(response => {
-                let res = response.data;
-                this.setState({ resposta: res })
-                let token = this.state.resposta.token;
-                let contractor = this.state.resposta.user.contractor;
+            .then(({ data: resposta }) => {
+                this.setState({ resposta });
+
+                const { token, user: { contractor, email, id, name } } = resposta;
+                
+                localStorage.setItem('id', id);
+                localStorage.setItem('email', email);
                 localStorage.setItem('token', token);  
+                localStorage.setItem('name', name);
                 localStorage.setItem('contractor', contractor);
                 window.location.href = "/admin/dashboard";
             })

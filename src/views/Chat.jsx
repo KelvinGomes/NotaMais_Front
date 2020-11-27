@@ -1,125 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import MessageCard from 'components/MessageCard';
 import Messages from 'components/Messages/Messages';
 import Input from 'components/Input/Input';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import './Chat.css';
 
 
-const Chat = () => {
-  const [name, setName] = useState('Dara');
+const Chat = props => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
 
+  const [user, setUser] = useState({ id: 0, name: '' });
 
   useEffect(() => {
-    const text = 'Oiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii';
-    const msg = [
-      {
-        user: 'Kelvin',
-        text
-      },
-      {
-        user: 'Dara',
-        text
-      }
-    ];
-    setMessages([...msg]);
-  }, []);
+    const id = Number(localStorage.getItem('id'));
+    const name = localStorage.getItem('name');
+    const token = localStorage.getItem('token');
+    setUser({ id, name });
 
+    const { orderId } = props.match.params;
+
+    axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
+    axios.get(`https://notamais-backend01.herokuapp.com/orders/${orderId}`)
+      .then(res => {
+        console.log(res);        
+      })
+      .catch((error) => {
+        // window.alert("Erro: todos os campos são de preechimento obrigatório!");
+      });
+    axios.get(`https://notamais-backend01.herokuapp.com/offers/${orderId}`)
+      .then(res => {
+        console.log(res);        
+      })
+      .catch((error) => {
+        // window.alert("Erro: todos os campos são de preechimento obrigatório!");
+      });
+
+    updateChat();
+    // setInterval(updateChat, 1000);
+  }, []);
+  
   const sendMessage = event => {
     event.preventDefault();
-
-    console.log(message);
-
     if (message) {
-      setMessages([...messages, {user: 'Dara', text: message}]);
-      // socket.emit('sendMessage', message, () => setMessage(''));
+      setMessages([...messages, { user, text: message }]);
+      const obj = {
+        messages: [{
+          sender: user,
+          message
+        }]
+      }
+      const { orderId } = props.match.params; 
+      axios.put(`http://localhost:3535/chat/${orderId}`)
+        .then(res => console.log(res))
+        .catch(res => console.log(res));
+      console.log(obj);
+      setMessage('');
     }
+  }
+  
+  const updateChat = () => {
+    const { orderId } = props.match.params;
+    axios.get(`http://localhost:3535/chat/${orderId}`).then(({ data }) => {
+      console.log(data);
+      const msgs = data.messages.map(msg => {
+        const user = msg.sender;
+        const text = msg.message;
+        return { user, text };
+      });
+      setMessages([...msgs]);
+    });
   }
 
   return (
     <>
-    <div className="ml-5 mt-2 mb-3">
-      <h2 style={{ color: '#0F1448' }}>MENSAGENS - KELVIN GOMES</h2>
-      <Link to="/admin/detalhes_prestador/75" style={{ color: '#000' }}>
-              <i className="fa fa-arrow-left fa-2x"></i>
-            </Link>
-    </div>
-
-    <div className="outerContainer">
-      <div className="container">
-          {/* <InfoBar room={room} /> */}
-          <Messages messages={messages} name={name} />
-          <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+      <div className="ml-5 mt-2 mb-3">
+        <h2 style={{ color: '#0F1448' }}>MENSAGENS - KELVIN GOMES</h2>
+        <Link to={`/admin/detalhes_prestador/${props.match.params.orderId}`} style={{ color: '#000' }}>
+          <i className="fa fa-arrow-left fa-2x"></i>
+        </Link>
       </div>
-      {/* <TextContainer users={users}/> */}
-    </div>
+
+      <div className="outerContainer">
+        <div className="container">
+          <Messages messages={messages} name={user.name} id={user.id} />
+          <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+        </div>
+      </div>
     </>
-  );
-
-
-  return (
-    <div className="ml-5 mt-2">
-      <h2 style={{ color: '#0F1448' }}>MENSAGENS - KELVIN GOMES</h2>
-      {/* <div className="content"> */}
-      {/* <div style={styles.outerContainer}>
-      <div style={styles.container}> */}
-        <Messages
-          name="Dara"
-          messages={messages}
-        />
-        <hr />
-        <Input
-          message={message}
-          setMessage={setMessage}
-          sendMessage={sendMessage}
-        />
-      {/* </div>
-      </div> */}
-
-      {/* <div className="row">
-          <div className="col-1">
-            <Link to="/admin/detalhes_prestador/75" style={{ color: '#000' }}>
-              <i className="fa fa-arrow-left fa-2x"></i>
-            </Link>
-
-          </div>
-          <div className="col">
-            {
-              messages.map((msg, index) => (
-                <MessageCard key={index} {...msg} />)
-              )
-            }
-          </div>
-        </div> */}
-    </div>
-
   );
 }
 
 export default Chat;
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    // borderRadius: '8px', 
-    // width: '35%'
-    height:'100%'
-  },
-  outerContainer: {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'start',
-  height: '100%',
-  width: '100vmin'
-},
-  end: {
-    position:' absolute',
-    bottom: 0
-    }
-
-}
