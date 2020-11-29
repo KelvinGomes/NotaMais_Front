@@ -273,7 +273,7 @@ class Detalhes_Prestador extends React.Component {
                           <p>{this.state.offers.description}</p>
                         </Col>
                         <Col>
-                          <Link to="/admin/chat/52"><MessageButton /></Link>
+                          <Link to={`/admin/chat/${this.props.match.params.id}`}><MessageButton /></Link>
                         </Col>
                       </Row>
                     </CardBody>

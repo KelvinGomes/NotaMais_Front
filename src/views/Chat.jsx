@@ -37,25 +37,26 @@ const Chat = props => {
         // window.alert("Erro: todos os campos são de preechimento obrigatório!");
       });
 
-    updateChat();
-    // setInterval(updateChat, 1000);
+    // updateChat();
+    setInterval(updateChat, 1000);
   }, []);
   
   const sendMessage = event => {
     event.preventDefault();
     if (message) {
       setMessages([...messages, { user, text: message }]);
-      const obj = {
+      const data = {
         messages: [{
+          date: new Date(),
           sender: user,
           message
         }]
       }
       const { orderId } = props.match.params; 
-      axios.put(`http://localhost:3535/chat/${orderId}`)
+      axios.put(`http://localhost:3535/chat/${orderId}`, data)
         .then(res => console.log(res))
         .catch(res => console.log(res));
-      console.log(obj);
+      console.log(data);
       setMessage('');
     }
   }
@@ -76,7 +77,7 @@ const Chat = props => {
   return (
     <>
       <div className="ml-5 mt-2 mb-3">
-        <h2 style={{ color: '#0F1448' }}>MENSAGENS - KELVIN GOMES</h2>
+        <h2 style={{ color: '#0F1448' }}>MENSAGENS</h2>
         <Link to={`/admin/detalhes_prestador/${props.match.params.orderId}`} style={{ color: '#000' }}>
           <i className="fa fa-arrow-left fa-2x"></i>
         </Link>

@@ -189,6 +189,16 @@ class Detalhes extends React.Component {
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
     await axios.put(` https://notamais-backend01.herokuapp.com/orders/${id}`, { selectedOffer: idOffer, status: 2 })
       .then(res => {
+        const data = {
+          orderId: id, 
+          participants: [
+            { id: null, name: null},
+            { id: null, name: null}
+          ] 
+        }
+        axios.post(`http://localhost:3535/chat`, data)
+          .then(resp => console.log(resp))
+          .catch(resp => console.log(resp));
         window.alert("Propósta aceita com sucesso!");
         window.location.reload();
       })
@@ -292,7 +302,7 @@ class Detalhes extends React.Component {
                               <p>{offer.description}</p>
                             </Col>
                             <Col>
-                              <Link to="/admin/chat"><MessageButton /></Link>
+                              <Link to={`/admin/chat/${this.props.match.params.id}`}><MessageButton /></Link>
                             </Col>
                           </Row>
                         </CardBody>
