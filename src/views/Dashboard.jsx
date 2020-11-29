@@ -277,29 +277,13 @@ class Dashboard extends React.Component {
             <CardTitle className="titulo" style={{margin: "20px"}}>Gráficos</CardTitle>
           </Row>
           <Row>
-            <Col md="4">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h5">Pedidos por área</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <Pie
-                    data={dashboardEmailStatisticsChart.data}
-                    options={dashboardEmailStatisticsChart.options}
-                  />
-                </CardBody>
-                <CardFooter>
-                  <div className="legend">
-                    <i className="fa fa-circle text-primary" /> Exatas{" "}
-                    <i className="fa fa-circle text-warning" /> Biológicas{" "}
-                    <br/>
-                    <i className="fa fa-circle text-danger" /> Humanas{" "}
-                    <i className="fa fa-circle text-gray" /> Linguagens{" "}
-                  </div>
-                </CardFooter>
-              </Card>
-            </Col>
-            
+           <iframe 
+              width="100%" height="800px" 
+              src="https://datastudio.google.com/embed/reporting/ac2c5c51-ec23-4edc-a908-575f4ba26f57/page/DLtqB"
+              frameborder="0" style= {{border:0, borderTopLeftRadius: "15px", borderTopRightRadius: "15px",
+              borderBottomLeftRadius: "15px", borderBottomRightRadius: "15px",
+              boxShadow: "0 5px 0 0 rgba(0, 0, 0, 0.1)" }} allowfullscreen>
+            </iframe>  
           </Row>
         </div>
       </>
